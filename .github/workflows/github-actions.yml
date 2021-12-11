@@ -19,5 +19,5 @@ jobs:
       - name: build-push
         run: |
           ./gradlew dockerBuildNative
-          docker tag idiomcentric-service --tag sevenleap/apps:pobail
+          docker tag idiomcentric-service:latest sevenleap/apps:pobail
           docker push sevenleap/apps:pobail
