@@ -10,7 +10,7 @@ class HealthController(private val conferenceService: ConferenceService) {
     private val start = Health()
 
     @Get("/health")
-    fun health(): Health = start
+    suspend fun health(): Health = start
 }
 
 @Introspected
