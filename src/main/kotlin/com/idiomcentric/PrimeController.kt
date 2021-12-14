@@ -5,9 +5,13 @@ import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import mu.KLogger
+import mu.KotlinLogging
+import mu.withLoggingContext
 import java.math.BigInteger
 import java.security.SecureRandom
 
+val logger: KLogger = KotlinLogging.logger {}
 @Controller("/primes")
 class PrimeController {
     private val random = SecureRandom()
@@ -18,7 +22,10 @@ class PrimeController {
 
     @Get("/random/{num}")
     suspend fun randomPrimes(num: Int): List<PrimeNumber> = runBlocking(Dispatchers.Default) {
-        List(num) { PrimeNumber(BigInteger.probablePrime(bitLength, random)) }
+        withLoggingContext("primes" to num.toString()) {
+            logger.info("Generating prime numbers")
+            List(num) { PrimeNumber(BigInteger.probablePrime(bitLength, random)) }
+        }
     }
 }
 
