@@ -1,6 +1,7 @@
 package com.idiomcentric
 
 import io.micronaut.core.annotation.Introspected
+import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import kotlinx.coroutines.Dispatchers
@@ -17,10 +18,10 @@ class PrimeController {
     private val random = SecureRandom()
     private val bitLength = 32;
 
-    @Get("/random")
+    @Get("/random", produces = [MediaType.APPLICATION_JSON])
     suspend fun randomPrime(): PrimeNumber = PrimeNumber(BigInteger.probablePrime(bitLength, random))
 
-    @Get("/random/{num}")
+    @Get("/random/{num}", produces = [MediaType.APPLICATION_JSON])
     suspend fun randomPrimes(num: Int): List<PrimeNumber> = runBlocking(Dispatchers.Default) {
         withLoggingContext("primes" to num.toString()) {
             logger.info("Generating prime numbers")
