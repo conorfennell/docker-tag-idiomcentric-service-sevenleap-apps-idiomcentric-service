@@ -2,6 +2,8 @@ micronaut:
   application:
     name: idiomcentric-service
   server:
+    cors:
+      enabled: true
     netty:
       access-logger:
         enabled: true # Enables the access logger
