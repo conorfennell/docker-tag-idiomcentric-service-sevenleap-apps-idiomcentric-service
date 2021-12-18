@@ -55,6 +55,5 @@ kotlin {
     jvmToolchain {
         (this as JavaToolchainSpec)
         this.languageVersion.set(JavaLanguageVersion.of(11))
-        this.vendor.set(JvmVendorSpec.GRAAL_VM)
     }
 }
