@@ -1,10 +1,25 @@
 package com.idiomcentric
 
 import io.micronaut.runtime.Micronaut.*
-fun main(args: Array<String>) {
-	build()
-	    .args(*args)
-		.packages("com.idiomcentric")
-		.start()
+import io.swagger.v3.oas.annotations.OpenAPIDefinition
+import io.swagger.v3.oas.annotations.info.Contact
+import io.swagger.v3.oas.annotations.info.Info
+
+@OpenAPIDefinition(
+	info = Info(
+		title = "idiomcentric service",
+		version = "\${api.version}",
+		description = "\${openapi.description}",
+		contact = Contact(name = "Conor")
+	)
+)
+object Application {
+	@JvmStatic
+	fun main(args: Array<String>) {
+		build()
+			.args(*args)
+			.packages("com.idiomcentric")
+			.start()
+	}
 }
 
