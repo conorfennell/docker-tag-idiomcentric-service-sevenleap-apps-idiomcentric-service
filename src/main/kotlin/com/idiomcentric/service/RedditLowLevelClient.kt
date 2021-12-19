@@ -10,7 +10,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.reactive.asFlow
+import mu.KLogger
+import mu.KotlinLogging
+import mu.withLoggingContext
 import java.net.URI
+
+val logger: KLogger = KotlinLogging.logger {}
 
 @Singleton
 class RedditLowLevelClient(
@@ -31,7 +36,11 @@ class RedditLowLevelClient(
 
         return httpClient.retrieve(request, RedditResponse::class.java).asFlow().flatMapConcat {
             flow {
-                it.data.children.map { it.data }.forEach { emit(it) }
+                val stories = it.data.children.map { it.data }
+                withLoggingContext("stories" to stories.size.toString()) {
+                    logger.info { "Retrieve stories" }
+                }
+                stories.forEach { emit(it) }
             }
         }
     }
