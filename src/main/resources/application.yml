@@ -19,4 +19,10 @@ jackson:
   serialization:
     writeDatesAsTimestamps: false
   deserialization:
-    failOnUnknownProperties: true
+    failOnUnknownProperties: false
+
+reddit:
+  limit: 10
+  query: top.json
+  subReddit: worldnews
+  t: day
