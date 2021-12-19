@@ -5,6 +5,11 @@ import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.uri.UriBuilder
 import jakarta.inject.Singleton
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.reactive.asFlow
 import java.net.URI
 
 @Singleton
@@ -20,8 +25,14 @@ class RedditLowLevelClient(
         .queryParam("t", configuration.t)
         .build()
 
-    fun fetchTopPosts(): RedditResponse {
+    @OptIn(FlowPreview::class)
+    fun fetchTopPosts(): Flow<RedditChildData> {
         val request = HttpRequest.GET<RedditResponse>(uri)
-        return httpClient.toBlocking().retrieve(request, RedditResponse::class.java)
+
+        return httpClient.retrieve(request, RedditResponse::class.java).asFlow().flatMapConcat {
+            flow {
+                it.data.children.map { it.data }.forEach { emit(it) }
+            }
+        }
     }
 }
