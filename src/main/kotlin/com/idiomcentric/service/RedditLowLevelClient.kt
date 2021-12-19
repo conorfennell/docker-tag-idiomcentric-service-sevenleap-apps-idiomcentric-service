@@ -6,16 +6,7 @@ import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.uri.UriBuilder
 import jakarta.inject.Singleton
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.reactive.asFlow
-import mu.KLogger
-import mu.KotlinLogging
-import mu.withLoggingContext
 import java.net.URI
-
-val logger: KLogger = KotlinLogging.logger {}
 
 @Singleton
 class RedditLowLevelClient(
@@ -31,17 +22,11 @@ class RedditLowLevelClient(
         .build()
 
     @OptIn(FlowPreview::class)
-    fun fetchTopPosts(): Flow<RedditChildData> {
+    fun fetchTopPosts(): List<RedditChildData> {
         val request = HttpRequest.GET<RedditResponse>(uri)
 
-        return httpClient.retrieve(request, RedditResponse::class.java).asFlow().flatMapConcat {
-            flow {
-                val stories = it.data.children.map { it.data }
-                withLoggingContext("stories" to stories.size.toString()) {
-                    logger.info { "Retrieve stories" }
-                }
-                stories.forEach { emit(it) }
-            }
-        }
+        return httpClient.toBlocking()
+            .retrieve(request, RedditResponse::class.java).data.children.map { it.data }
+
     }
 }
