@@ -4,12 +4,13 @@ import io.micronaut.http.HttpRequest
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.uri.UriBuilder
+import io.micronaut.retry.annotation.Retryable
 import jakarta.inject.Singleton
 import kotlinx.coroutines.FlowPreview
 import java.net.URI
 
 @Singleton
-class RedditLowLevelClient(
+open class RedditLowLevelClient(
     @param:Client(RedditConfiguration.REDDIT_API_URL)
     private val httpClient: HttpClient,
     configuration: RedditConfiguration
@@ -22,7 +23,8 @@ class RedditLowLevelClient(
         .build()
 
     @OptIn(FlowPreview::class)
-    fun fetchTopPosts(): List<RedditChildData> {
+    @Retryable(attempts = "3", delay = "1")
+    open fun fetchTopPosts(): List<RedditChildData> {
         val request = HttpRequest.GET<RedditResponse>(uri)
 
         return httpClient.toBlocking()
