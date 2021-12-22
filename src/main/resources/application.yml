@@ -15,6 +15,11 @@ micronaut:
         paths: classpath:META-INF/swagger
         mapping: /swagger/**
 
+  caches:
+    headlines:
+      charset: 'UTF-8'
+      expire-after-write: 10m
+
 jackson:
   serialization:
     writeDatesAsTimestamps: false
