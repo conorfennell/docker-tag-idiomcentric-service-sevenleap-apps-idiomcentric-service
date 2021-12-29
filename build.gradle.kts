@@ -31,9 +31,11 @@ allOpen {
 dependencies {
     kapt("io.micronaut:micronaut-http-validation")
     kapt("io.micronaut.openapi:micronaut-openapi")
+    compileOnly("org.graalvm.nativeimage:svm")
     implementation("io.swagger.core.v3:swagger-annotations")
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut:micronaut-runtime")
+    implementation("io.micronaut:micronaut-graal")
     implementation("io.micronaut:micronaut-validation")
     implementation("io.micronaut.cache:micronaut-cache-caffeine")
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
