@@ -48,7 +48,6 @@ dependencies {
     implementation("ch.qos.logback.contrib:logback-json-classic:0.1.5")
     implementation("ch.qos.logback.contrib:logback-jackson:0.1.5")
     implementation("io.github.microutils:kotlin-logging:2.1.21")
-    compileOnly("org.graalvm.nativeimage:svm")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("io.micronaut.test:micronaut-test-junit5:3.0.5")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")

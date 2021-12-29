@@ -12,11 +12,11 @@ data class RedditData(
 
 @Introspected
 data class RedditChild(
-    val data: RedditChildData
+    val data: RedditPost
 )
 
 @Introspected
-data class RedditChildData(
+data class RedditPost(
     val title: String,
     val url: String,
     val isVideo: Boolean,
