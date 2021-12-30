@@ -21,3 +21,8 @@
 ```sh
 ./gradlew wrapper --gradle-version 7.3.3
 ```
+
+# check dependenices
+```sh
+./gradlew dependencyUpdates
+```
