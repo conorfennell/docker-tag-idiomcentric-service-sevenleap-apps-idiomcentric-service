@@ -2,8 +2,9 @@ plugins {
     kotlin("jvm") version "1.6.0"
     kotlin("kapt") version "1.6.0"
     id("org.jetbrains.kotlin.plugin.allopen") version "1.6.0"
-    id("com.github.johnrengelman.shadow") version "7.1.0"
-    id("io.micronaut.application") version "3.0.1"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("io.micronaut.application") version "3.1.1"
+    id("com.github.ben-manes.versions") version "0.39.0"
 }
 
 version = "1.0.0"
@@ -14,7 +15,7 @@ repositories {
 }
 
 micronaut {
-    version.set("3.2.1")
+    version.set("3.2.3")
     runtime("netty")
     testRuntime("junit5")
     processing {

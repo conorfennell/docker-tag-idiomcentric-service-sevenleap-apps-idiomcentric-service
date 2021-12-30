@@ -16,3 +16,8 @@
 ```bash
 ./gradlew dockerBuildNative
 ```
+
+# upgrade gradlew
+```sh
+./gradlew wrapper --gradle-version 7.3.3
+```
