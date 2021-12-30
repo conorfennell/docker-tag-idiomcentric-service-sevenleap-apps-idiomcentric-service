@@ -9,10 +9,10 @@ val micronautVersion: String by project
 plugins {
     kotlin("jvm")
     kotlin("kapt")
-    id("org.jetbrains.kotlin.plugin.allopen")
+    id("com.github.ben-manes.versions")
     id("com.github.johnrengelman.shadow")
     id("io.micronaut.application")
-    id("com.github.ben-manes.versions")
+    id("org.jetbrains.kotlin.plugin.allopen")
 }
 
 version = "1.0.0"
@@ -40,28 +40,28 @@ allOpen {
 dependencies {
     kapt("io.micronaut:micronaut-http-validation")
     kapt("io.micronaut.openapi:micronaut-openapi")
-    compileOnly("org.graalvm.nativeimage:svm")
-    implementation("io.swagger.core.v3:swagger-annotations")
+    implementation("ch.qos.logback.contrib:logback-json-classic:$logbackVersion")
+    implementation("ch.qos.logback.contrib:logback-jackson:$logbackVersion")
+    implementation("ch.qos.logback:logback-classic")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut:micronaut-runtime")
     implementation("io.micronaut:micronaut-graal")
     implementation("io.micronaut:micronaut-validation")
     implementation("io.micronaut.cache:micronaut-cache-caffeine")
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
+    implementation("io.swagger.core.v3:swagger-annotations")
     implementation("javax.annotation:javax.annotation-api")
+    implementation("org.graalvm.nativeimage:svm")
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:$kotlinxCoroutinesVersion")
-    runtimeOnly("ch.qos.logback:logback-classic")
-    implementation("ch.qos.logback.contrib:logback-json-classic:$logbackVersion")
-    implementation("ch.qos.logback.contrib:logback-jackson:$logbackVersion")
-    implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("io.micronaut.test:micronaut-test-junit5:$micronautTestJunit5")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterEngine")
-    runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
 
+    testImplementation("io.micronaut.test:micronaut-test-junit5:$micronautTestJunit5")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterEngine")
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
 }
 
 application {
