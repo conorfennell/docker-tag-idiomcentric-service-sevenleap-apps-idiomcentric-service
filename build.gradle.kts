@@ -3,8 +3,9 @@ val kotlinLoggingVersion: String by project
 val kotlinVersion: String by project
 val kotlinxCoroutinesVersion: String by project
 val logbackVersion: String by project
-val micronautTestJunit5: String by project
+val micronautTestJunit5Version: String by project
 val micronautVersion: String by project
+val mockkVersion: String by project
 
 plugins {
     kotlin("jvm")
@@ -59,9 +60,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:$kotlinxCoroutinesVersion")
 
-    testImplementation("io.micronaut.test:micronaut-test-junit5:$micronautTestJunit5")
+    testImplementation("io.micronaut.test:micronaut-test-junit5:$micronautTestJunit5Version")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterEngine")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("io.mockk:mockk:$mockkVersion")
 }
 
 application {
