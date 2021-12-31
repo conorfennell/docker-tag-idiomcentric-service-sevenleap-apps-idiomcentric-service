@@ -27,7 +27,10 @@ jackson:
     failOnUnknownProperties: false
 
 reddit:
+  host: https://www.reddit.com
   limit: 10
+  port: 443
   query: top.json
+  rPath: r
   subReddit: worldnews
   t: day
