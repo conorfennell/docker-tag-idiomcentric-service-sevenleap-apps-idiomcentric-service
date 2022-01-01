@@ -6,6 +6,8 @@ val logbackVersion: String by project
 val micronautTestJunit5Version: String by project
 val micronautVersion: String by project
 val mockkVersion: String by project
+val mockServerVersion: String by project
+val mockServerClientVersion: String by project
 
 plugins {
     kotlin("jvm")
@@ -64,6 +66,9 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterEngine")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("org.testcontainers:mockserver:$mockServerVersion")
+    testAnnotationProcessor("io.micronaut:micronaut-inject-java")
+    testImplementation("org.mock-server:mockserver-client-java:$mockServerClientVersion")
 }
 
 application {
