@@ -18,6 +18,7 @@ object Application {
 	fun main(args: Array<String>) {
 		build()
 			.args(*args)
+			.eagerInitConfiguration(true)
 			.packages("com.idiomcentric")
 			.start()
 	}
