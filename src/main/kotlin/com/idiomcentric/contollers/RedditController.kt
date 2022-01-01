@@ -1,7 +1,7 @@
 package com.idiomcentric.contollers
 
-import com.idiomcentric.service.RedditPost
 import com.idiomcentric.service.reddit.RedditClient
+import com.idiomcentric.service.reddit.RedditPost
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 

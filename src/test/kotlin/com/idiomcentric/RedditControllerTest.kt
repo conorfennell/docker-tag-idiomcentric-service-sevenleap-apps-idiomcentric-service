@@ -1,6 +1,6 @@
 package com.idiomcentric
 
-import com.idiomcentric.service.RedditPost
+import com.idiomcentric.service.reddit.RedditPost
 import io.micronaut.core.type.Argument
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.client.HttpClient
