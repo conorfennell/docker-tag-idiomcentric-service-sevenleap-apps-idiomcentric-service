@@ -1,7 +1,5 @@
 package com.idiomcentric.service.reddit
 
-import com.idiomcentric.service.RedditPost
-import com.idiomcentric.service.RedditResponse
 import io.micronaut.cache.annotation.CacheConfig
 import io.micronaut.cache.annotation.Cacheable
 import io.micronaut.http.HttpRequest

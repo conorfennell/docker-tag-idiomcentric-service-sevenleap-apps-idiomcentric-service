@@ -1,4 +1,4 @@
-package com.idiomcentric.service
+package com.idiomcentric.service.reddit
 
 import io.micronaut.core.annotation.Introspected
 
