@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test
 class HealthControllerTest {
 
     @Inject
-    @field:Client("/")
+    @field:Client("/v1")
     lateinit var healthClient: HttpClient
 
 

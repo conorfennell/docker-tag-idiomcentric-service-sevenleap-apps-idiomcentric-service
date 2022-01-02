@@ -19,5 +19,5 @@ data class RedditChild(
 data class RedditPost(
     val title: String,
     val url: String,
-    val isVideo: Boolean,
+    val score: Int,
 )

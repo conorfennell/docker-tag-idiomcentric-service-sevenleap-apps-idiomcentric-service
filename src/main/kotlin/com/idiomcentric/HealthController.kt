@@ -5,7 +5,7 @@ import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import java.time.Instant
 
-@Controller("/")
+@Controller("/v1")
 class HealthController(private val conferenceService: ConferenceService) {
     private val start = Health()
 

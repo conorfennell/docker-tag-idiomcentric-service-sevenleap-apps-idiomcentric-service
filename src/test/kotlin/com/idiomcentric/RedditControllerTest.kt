@@ -18,7 +18,7 @@ import org.mockserver.model.MediaType
 
 @MicronautTest(rebuildContext = true)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class RedditControllerTest : TestPropertyProvider, MockServerProvider() {
+class RedditControllerTest : TestPropertyProvider, IntegrationProvider() {
 
     @Inject
     @field:Client("/reddit")

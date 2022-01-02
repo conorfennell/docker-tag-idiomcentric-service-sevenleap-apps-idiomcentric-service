@@ -20,6 +20,21 @@ micronaut:
       charset: 'UTF-8'
       expire-after-write: 10m
 
+datasources:
+  default:
+    url: jdbc:postgresql://localhost:5432/postgres
+    driverClassName: org.postgresql.Driver
+    username: username
+    password: password
+    schema-generate: CREATE_DROP
+    dialect: POSTGRES
+
+
+flyway:
+  datasources:
+    default:
+      enabled: false
+
 jackson:
   serialization:
     writeDatesAsTimestamps: false

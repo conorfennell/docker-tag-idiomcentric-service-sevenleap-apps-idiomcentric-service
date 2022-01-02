@@ -6,7 +6,7 @@ val logbackVersion: String by project
 val micronautTestJunit5Version: String by project
 val micronautVersion: String by project
 val mockkVersion: String by project
-val mockServerVersion: String by project
+val testContainersVersion: String by project
 val mockServerClientVersion: String by project
 
 plugins {
@@ -48,6 +48,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
+    implementation("io.micronaut.flyway:micronaut-flyway")
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut:micronaut-runtime")
     implementation("io.micronaut:micronaut-graal")
@@ -61,12 +62,14 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:$kotlinxCoroutinesVersion")
+    runtimeOnly("org.postgresql:postgresql")
 
     testImplementation("io.micronaut.test:micronaut-test-junit5:$micronautTestJunit5Version")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterEngine")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("io.mockk:mockk:$mockkVersion")
-    testImplementation("org.testcontainers:mockserver:$mockServerVersion")
+    testImplementation("org.testcontainers:mockserver:$testContainersVersion")
+    testImplementation("org.testcontainers:postgresql:$testContainersVersion")
     testAnnotationProcessor("io.micronaut:micronaut-inject-java")
     testImplementation("org.mock-server:mockserver-client-java:$mockServerClientVersion")
 }
