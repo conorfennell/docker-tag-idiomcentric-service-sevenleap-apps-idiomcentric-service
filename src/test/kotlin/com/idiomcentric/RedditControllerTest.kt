@@ -36,7 +36,7 @@ class RedditControllerTest : TestPropertyProvider, IntegrationProvider() {
             )
             .respond(
                 response()
-                    .withBody(loadResponse("200_r_worldnews_top_json_ten.json"), MediaType.APPLICATION_JSON)
+                    .withBody(loadResource("200_r_worldnews_top_json_ten.json"), MediaType.APPLICATION_JSON)
             )
 
         val actual: List<RedditPost> = redditClient

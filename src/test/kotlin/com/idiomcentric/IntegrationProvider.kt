@@ -28,10 +28,11 @@ abstract class IntegrationProvider {
             .dataSource(
                 postgreSQLServer.jdbcUrl,
                 postgreSQLServer.username,
-                postgreSQLServer.password).load()
+                postgreSQLServer.password)
+            .locations("db/migration", "db/callbacks").load()
     }
 
-    fun loadResponse(name: String): String = ClassLoader.getSystemResource(name).readText()
+    fun loadResource(name: String): String = ClassLoader.getSystemResource(name).readText()
 
     @BeforeEach
     fun beforeEach() {
