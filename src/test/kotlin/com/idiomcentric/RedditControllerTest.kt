@@ -5,18 +5,20 @@ import io.micronaut.core.type.Argument
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
+import io.micronaut.http.client.exceptions.ReadTimeoutException
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.micronaut.test.support.TestPropertyProvider
 import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.mockserver.client.MockServerClient
+import org.mockserver.matchers.Times
+import org.mockserver.model.HttpError
 import org.mockserver.model.HttpRequest.request
 import org.mockserver.model.HttpResponse.response
 import org.mockserver.model.MediaType
 
-@MicronautTest(rebuildContext = true)
+@MicronautTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class RedditControllerTest : TestPropertyProvider, IntegrationProvider() {
 
@@ -25,9 +27,9 @@ class RedditControllerTest : TestPropertyProvider, IntegrationProvider() {
     lateinit var redditClient: HttpClient
 
     @Test
-    fun testRedditResponse() {
+    fun shouldReturnRedditResponseSuccessfully() {
         // GET r/worldnews/top.json?limit=10&t=day
-        MockServerClient(mockServer.host, mockServer.serverPort)
+        mockServerClient
             .`when`(
                 request()
                     .withPath("/r/worldnews/top.json")
@@ -46,8 +48,40 @@ class RedditControllerTest : TestPropertyProvider, IntegrationProvider() {
         Assertions.assertEquals(3, actual.size, "should return three posts")
     }
 
+    @Test
+    fun shouldThrowReadTimeoutException() {
+        mockServerClient
+            .`when`(
+                request()
+                    .withPath("/r/worldnews/top.json")
+                    .withQueryStringParameter("limit", "10")
+                    .withQueryStringParameter("t", "day"),
+                Times.exactly(1)
+            )
+            .error(
+                HttpError
+                    .error()
+                    .withDropConnection(true)
+            )
+
+        val thrown = Assertions.assertThrows(
+            ReadTimeoutException::class.java,
+            {
+
+                val response = redditClient
+                    .toBlocking()
+                    .retrieve(HttpRequest.GET<List<RedditPost>>("/top"), Argument.listOf(RedditPost::class.java))
+
+                response
+            }, "ReadTimeoutException was expected"
+        )
+
+        Assertions.assertEquals("Read Timeout", thrown.message)
+    }
+
     override fun getProperties(): MutableMap<String, String> = mutableMapOf(
         "reddit.host" to "http://${mockServer.host}",
-        "reddit.port" to mockServer.serverPort.toString()
+        "reddit.port" to mockServer.serverPort.toString(),
+        "micronaut.caches.headlines.expire-after-write" to "1ms"
     )
 }
