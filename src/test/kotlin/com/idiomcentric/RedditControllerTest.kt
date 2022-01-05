@@ -66,13 +66,9 @@ class RedditControllerTest : TestPropertyProvider, IntegrationProvider() {
 
         val thrown = Assertions.assertThrows(
             ReadTimeoutException::class.java,
-            {
-
-                val response = redditClient
+            { redditClient
                     .toBlocking()
                     .retrieve(HttpRequest.GET<List<RedditPost>>("/top"), Argument.listOf(RedditPost::class.java))
-
-                response
             }, "ReadTimeoutException was expected"
         )
 
