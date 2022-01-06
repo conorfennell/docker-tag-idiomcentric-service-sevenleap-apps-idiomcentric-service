@@ -49,3 +49,7 @@ reddit:
   rPath: r
   subReddit: worldnews
   t: day
+
+jobs:
+  reddit:
+    fixedDelay: 10m
