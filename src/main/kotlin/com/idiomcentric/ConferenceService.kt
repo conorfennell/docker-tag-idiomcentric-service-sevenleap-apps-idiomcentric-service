@@ -1,7 +1,7 @@
 package com.idiomcentric
 
-import java.util.Random
 import jakarta.inject.Singleton
+import java.util.Random
 
 @Singleton
 class ConferenceService {
@@ -18,5 +18,4 @@ class ConferenceService {
             Conference("Codemotion Madrid")
         )
     }
-
 }

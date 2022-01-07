@@ -16,7 +16,6 @@ class PrimeControllerTest {
     @field:Client("/primes")
     lateinit var primesClient: HttpClient
 
-
     @Test
     fun testPrimeRandom() {
         val actual: PrimeNumber =
@@ -33,6 +32,4 @@ class PrimeControllerTest {
         Assertions.assertNotNull(actual, "prime number should not be null")
         Assertions.assertEquals(10, actual.size, "should return ten primes")
     }
-
 }
-

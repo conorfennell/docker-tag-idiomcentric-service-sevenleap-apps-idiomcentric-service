@@ -15,7 +15,6 @@ class HealthControllerTest {
     @field:Client("/v1")
     lateinit var healthClient: HttpClient
 
-
     @Test
     fun testHealth() {
         val actual: Health =
@@ -24,4 +23,3 @@ class HealthControllerTest {
         Assertions.assertNotNull(actual, "health should not be null")
     }
 }
-

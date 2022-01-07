@@ -18,6 +18,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: build-push
         run: |
+          ./gradlew ktlintCheck
           ./gradlew test
           ./gradlew dockerBuildNative
           docker tag idiomcentric-service:latest sevenleap/apps:idiomcentric-service

@@ -26,3 +26,9 @@
 ```sh
 ./gradlew dependencyUpdates
 ```
+
+# code formatting
+```sh
+./gradlew ktlintCheck
+./gradlew ktlintFormat
+```

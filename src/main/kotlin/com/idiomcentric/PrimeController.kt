@@ -16,7 +16,7 @@ val logger: KLogger = KotlinLogging.logger {}
 @Controller("/primes")
 class PrimeController {
     private val random = SecureRandom()
-    private val bitLength = 32;
+    private val bitLength = 32
 
     @Get("/random", produces = [MediaType.APPLICATION_JSON])
     suspend fun randomPrime(): PrimeNumber = PrimeNumber(BigInteger.probablePrime(bitLength, random))
@@ -32,4 +32,3 @@ class PrimeController {
 
 @Introspected
 data class PrimeNumber(val prime: BigInteger)
-

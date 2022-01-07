@@ -6,22 +6,21 @@ import io.swagger.v3.oas.annotations.info.Contact
 import io.swagger.v3.oas.annotations.info.Info
 
 @OpenAPIDefinition(
-	info = Info(
-		title = "idiomcentric service",
-		version = "\${api.version}",
-		description = "\${openapi.description}",
-		contact = Contact(name = "Conor")
-	)
+    info = Info(
+        title = "idiomcentric service",
+        version = "\${api.version}",
+        description = "\${openapi.description}",
+        contact = Contact(name = "Conor")
+    )
 )
 object Application {
-	@JvmStatic
-	fun main(args: Array<String>) {
-		build()
-			.args(*args)
-			.eagerInitSingletons(true)
-			.eagerInitConfiguration(true)
-			.packages("com.idiomcentric")
-			.start()
-	}
+    @JvmStatic
+    fun main(args: Array<String>) {
+        build()
+            .args(*args)
+            .eagerInitSingletons(true)
+            .eagerInitConfiguration(true)
+            .packages("com.idiomcentric")
+            .start()
+    }
 }
-

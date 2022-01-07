@@ -9,7 +9,6 @@ import org.testcontainers.containers.MockServerContainer
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.utility.DockerImageName
 
-
 abstract class IntegrationProvider {
     companion object {
         val MOCKSERVER_IMAGE: DockerImageName = DockerImageName.parse("mockserver/mockserver:mockserver-5.11.2")
@@ -24,13 +23,14 @@ abstract class IntegrationProvider {
     init {
         mockServer.start()
         postgreSQLServer.start()
-        mockServerClient = MockServerClient(mockServer.host, mockServer.serverPort);
+        mockServerClient = MockServerClient(mockServer.host, mockServer.serverPort)
         flyway = Flyway
             .configure()
             .dataSource(
                 postgreSQLServer.jdbcUrl,
                 postgreSQLServer.username,
-                postgreSQLServer.password)
+                postgreSQLServer.password
+            )
             .locations("db/migration", "db/callbacks").load()
     }
 

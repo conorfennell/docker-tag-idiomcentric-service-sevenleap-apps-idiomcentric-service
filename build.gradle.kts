@@ -16,6 +16,7 @@ plugins {
     id("com.github.johnrengelman.shadow")
     id("io.micronaut.application")
     id("org.jetbrains.kotlin.plugin.allopen")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 version = "1.0.0"
@@ -35,7 +36,6 @@ micronaut {
     }
 }
 
-
 allOpen {
     // Mark any classes with the following transactions as `open` automatically.
     annotations("io.micronaut.retry.annotation.Retryable")
@@ -49,6 +49,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
     implementation("io.micronaut.flyway:micronaut-flyway")
+    implementation("io.micronaut.data:micronaut-data-processor")
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut:micronaut-runtime")
     implementation("io.micronaut:micronaut-graal")
