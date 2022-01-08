@@ -4,6 +4,8 @@ import io.micronaut.core.annotation.Introspected
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
+import io.micronaut.security.annotation.Secured
+import io.micronaut.security.rules.SecurityRule
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import mu.KLogger
@@ -14,6 +16,7 @@ import java.security.SecureRandom
 
 val logger: KLogger = KotlinLogging.logger {}
 @Controller("/primes")
+@Secured(SecurityRule.IS_ANONYMOUS)
 class PrimeController {
     private val random = SecureRandom()
     private val bitLength = 32

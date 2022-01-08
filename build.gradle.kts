@@ -43,6 +43,8 @@ allOpen {
 dependencies {
     kapt("io.micronaut:micronaut-http-validation")
     kapt("io.micronaut.openapi:micronaut-openapi")
+    kapt("io.micronaut.security:micronaut-security-annotations")
+    implementation("io.micronaut.security:micronaut-security-jwt")
     implementation("ch.qos.logback.contrib:logback-json-classic:$logbackVersion")
     implementation("ch.qos.logback.contrib:logback-jackson:$logbackVersion")
     implementation("ch.qos.logback:logback-classic")
@@ -56,6 +58,8 @@ dependencies {
     implementation("io.micronaut:micronaut-validation")
     implementation("io.micronaut.cache:micronaut-cache-caffeine")
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
+    implementation("io.micronaut.reactor:micronaut-reactor")
+    implementation("io.micronaut.security:micronaut-security-jwt")
     implementation("io.swagger.core.v3:swagger-annotations")
     implementation("javax.annotation:javax.annotation-api")
     implementation("org.graalvm.nativeimage:svm")
