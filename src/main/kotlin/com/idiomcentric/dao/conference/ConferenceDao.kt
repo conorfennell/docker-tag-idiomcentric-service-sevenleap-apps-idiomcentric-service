@@ -5,6 +5,7 @@ import com.idiomcentric.dao.PostgresConnection
 import jakarta.inject.Singleton
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 import java.util.UUID
 
 @Singleton
@@ -14,6 +15,10 @@ class ConferenceDao(private val connection: PostgresConnection) {
         ConferenceTable.select {
             ConferenceTable.id eq id
         }.firstOrNull()?.let(::mapToConference)
+    }
+
+    suspend fun selectAll(): List<Conference> = connection.query {
+        ConferenceTable.selectAll().map(::mapToConference)
     }
 
     private fun mapToConference(row: ResultRow) =
