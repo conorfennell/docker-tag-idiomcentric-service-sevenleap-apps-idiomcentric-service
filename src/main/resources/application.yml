@@ -22,8 +22,12 @@ micronaut:
 
 datasources:
   default:
-    url: jdbc:postgresql://localhost:5432/postgres
+    port: 5432
+    hostname: localhost
+    database: postgres
+    url: jdbc:postgresql://${datasources.default.hostname}:${datasources.default.port}/${datasources.default.database}
     driverClassName: org.postgresql.Driver
+    maxPoolSize: 10
     username: username
     password: password
     schema-generate: CREATE_DROP

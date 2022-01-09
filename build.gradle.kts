@@ -1,4 +1,6 @@
+val hikaricpVersion: String by project
 val junitJupiterEngine: String by project
+val jetbrainsExposedVersion: String by project
 val kotlinLoggingVersion: String by project
 val kotlinVersion: String by project
 val kotlinxCoroutinesVersion: String by project
@@ -44,6 +46,7 @@ dependencies {
     kapt("io.micronaut:micronaut-http-validation")
     kapt("io.micronaut.openapi:micronaut-openapi")
     kapt("io.micronaut.security:micronaut-security-annotations")
+    implementation("com.zaxxer:HikariCP:$hikaricpVersion")
     implementation("io.micronaut.security:micronaut-security-jwt")
     implementation("ch.qos.logback.contrib:logback-json-classic:$logbackVersion")
     implementation("ch.qos.logback.contrib:logback-jackson:$logbackVersion")
@@ -51,7 +54,10 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
     implementation("io.micronaut.flyway:micronaut-flyway")
-    implementation("io.micronaut.data:micronaut-data-processor")
+    implementation("org.jetbrains.exposed:exposed-core:$jetbrainsExposedVersion")
+    implementation("org.jetbrains.exposed:exposed-dao:$jetbrainsExposedVersion")
+    implementation("org.jetbrains.exposed:exposed-jdbc:$jetbrainsExposedVersion")
+    implementation("org.jetbrains.exposed:exposed-java-time:$jetbrainsExposedVersion")
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut:micronaut-runtime")
     implementation("io.micronaut:micronaut-graal")

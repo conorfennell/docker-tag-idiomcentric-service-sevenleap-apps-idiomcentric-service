@@ -1,5 +1,5 @@
 CREATE TABLE reddit_posts (
-    id bigserial NOT NULL PRIMARY KEY,
+    id uuid NOT NULL DEFAULT uuid_generate_v4() PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     url    VARCHAR(255) NOT NULL,
     score  INTEGER NOT NULL,

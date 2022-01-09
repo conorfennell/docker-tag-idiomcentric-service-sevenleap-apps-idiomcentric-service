@@ -18,7 +18,7 @@ object Application {
     fun main(args: Array<String>) {
         build()
             .args(*args)
-            .eagerInitSingletons(true)
+//            .eagerInitSingletons(true)
             .eagerInitConfiguration(true)
             .packages("com.idiomcentric")
             .start()

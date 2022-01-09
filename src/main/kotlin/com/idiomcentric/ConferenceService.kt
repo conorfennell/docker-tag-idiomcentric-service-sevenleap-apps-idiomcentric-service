@@ -1,7 +1,9 @@
 package com.idiomcentric
 
 import jakarta.inject.Singleton
+import java.time.Instant
 import java.util.Random
+import java.util.UUID
 
 @Singleton
 class ConferenceService {
@@ -9,13 +11,13 @@ class ConferenceService {
 
     companion object {
         private val CONFERENCES = listOf(
-            Conference("Greach"),
-            Conference("GR8Conf EU"),
-            Conference("Micronaut Summit"),
-            Conference("Devoxx Belgium"),
-            Conference("Oracle Code One"),
-            Conference("CommitConf"),
-            Conference("Codemotion Madrid")
+            Conference(UUID.randomUUID(), "Greach", Instant.now(), Instant.now()),
+            Conference(UUID.randomUUID(), "GR8Conf EU", Instant.now(), Instant.now()),
+            Conference(UUID.randomUUID(), "Micronaut Summit", Instant.now(), Instant.now()),
+            Conference(UUID.randomUUID(), "Devoxx Belgium", Instant.now(), Instant.now()),
+            Conference(UUID.randomUUID(), "Oracle Code One", Instant.now(), Instant.now()),
+            Conference(UUID.randomUUID(), "CommitConf", Instant.now(), Instant.now()),
+            Conference(UUID.randomUUID(), "Codemotion Madrid", Instant.now(), Instant.now())
         )
     }
 }
