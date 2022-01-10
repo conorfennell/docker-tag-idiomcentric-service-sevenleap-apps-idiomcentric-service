@@ -21,6 +21,16 @@ import org.mockserver.model.MediaType
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class RedditControllerTest : IntegrationProvider() {
 
+    override fun getProperties(): MutableMap<String, String> {
+        val properties = super.getProperties() + mapOf(
+            "reddit.host" to "http://${mockServer.host}",
+            "reddit.port" to mockServer.serverPort.toString(),
+            "micronaut.caches.headlines.expire-after-write" to "1ms"
+        )
+
+        return properties.toMutableMap()
+    }
+
     @Inject
     @field:Client("/reddit")
     lateinit var redditClient: HttpClient
@@ -74,15 +84,5 @@ class RedditControllerTest : IntegrationProvider() {
         )
 
         Assertions.assertEquals("Read Timeout", thrown.message)
-    }
-
-    override fun getProperties(): MutableMap<String, String> {
-        return (
-            super.getProperties() + mapOf(
-                "reddit.host" to "http://${mockServer.host}",
-                "reddit.port" to mockServer.serverPort.toString(),
-                "micronaut.caches.headlines.expire-after-write" to "1ms"
-            )
-            ).toMutableMap()
     }
 }

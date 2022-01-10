@@ -9,7 +9,7 @@ import java.time.Instant
 
 @Controller("/v1")
 @Secured(SecurityRule.IS_ANONYMOUS)
-class HealthController(private val conferenceService: ConferenceService) {
+class HealthController {
     private val start = Health()
 
     @Get("/health")

@@ -1,5 +1,7 @@
-package com.idiomcentric
+package com.idiomcentric.contollers
 
+import com.idiomcentric.Conference
+import com.idiomcentric.ConferenceService
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.security.annotation.Secured
@@ -11,4 +13,7 @@ class ConferenceController(private val conferenceService: ConferenceService) {
 
     @Get("/random")
     fun randomConference(): Conference = conferenceService.randomConference()
+
+    @Get("/all")
+    suspend fun all(): List<Conference> = conferenceService.all()
 }
