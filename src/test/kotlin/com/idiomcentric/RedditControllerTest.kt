@@ -7,7 +7,6 @@ import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.client.exceptions.ReadTimeoutException
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
-import io.micronaut.test.support.TestPropertyProvider
 import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -20,7 +19,7 @@ import org.mockserver.model.MediaType
 
 @MicronautTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class RedditControllerTest : TestPropertyProvider, IntegrationProvider() {
+class RedditControllerTest : IntegrationProvider() {
 
     @Inject
     @field:Client("/reddit")
@@ -77,9 +76,13 @@ class RedditControllerTest : TestPropertyProvider, IntegrationProvider() {
         Assertions.assertEquals("Read Timeout", thrown.message)
     }
 
-    override fun getProperties(): MutableMap<String, String> = mutableMapOf(
-        "reddit.host" to "http://${mockServer.host}",
-        "reddit.port" to mockServer.serverPort.toString(),
-        "micronaut.caches.headlines.expire-after-write" to "1ms"
-    )
+    override fun getProperties(): MutableMap<String, String> {
+        return (
+            super.getProperties() + mapOf(
+                "reddit.host" to "http://${mockServer.host}",
+                "reddit.port" to mockServer.serverPort.toString(),
+                "micronaut.caches.headlines.expire-after-write" to "1ms"
+            )
+            ).toMutableMap()
+    }
 }

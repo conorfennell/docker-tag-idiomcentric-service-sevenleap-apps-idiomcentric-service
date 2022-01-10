@@ -1,5 +1,6 @@
 package com.idiomcentric
 
+import io.micronaut.test.support.TestPropertyProvider
 import org.flywaydb.core.Flyway
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
@@ -9,7 +10,7 @@ import org.testcontainers.containers.MockServerContainer
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.utility.DockerImageName
 
-abstract class IntegrationProvider {
+abstract class IntegrationProvider : TestPropertyProvider {
     companion object {
         val MOCKSERVER_IMAGE: DockerImageName = DockerImageName.parse("mockserver/mockserver:mockserver-5.11.2")
         val POSTGRES_SQL_IMAGE: DockerImageName = DockerImageName.parse("postgres:12.9")
@@ -52,4 +53,10 @@ abstract class IntegrationProvider {
         mockServer.stop()
         postgreSQLServer.stop()
     }
+
+    override fun getProperties(): MutableMap<String, String> = mutableMapOf(
+        "datasources.default.url" to postgreSQLServer.jdbcUrl,
+        "datasources.default.username" to postgreSQLServer.username,
+        "datasources.default.password" to postgreSQLServer.password,
+    )
 }
