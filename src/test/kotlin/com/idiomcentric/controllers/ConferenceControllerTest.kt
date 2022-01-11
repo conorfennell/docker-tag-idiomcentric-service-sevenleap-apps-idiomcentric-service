@@ -29,32 +29,18 @@ class ConferenceControllerTest : IntegrationProvider() {
         Assertions.assertEquals(1, actual.size, "should return 1 conference")
     }
 
-//    @Test
-//    fun shouldThrowReadTimeoutException() {
-//        mockServerClient
-//            .`when`(
-//                request()
-//                    .withPath("/r/worldnews/top.json")
-//                    .withQueryStringParameter("limit", "10")
-//                    .withQueryStringParameter("t", "day"),
-//                Times.exactly(1)
-//            )
-//            .error(
-//                HttpError
-//                    .error()
-//                    .withDropConnection(true)
-//            )
-//
-//        val thrown = Assertions.assertThrows(
-//            ReadTimeoutException::class.java,
-//            {
-//                redditClient
-//                    .toBlocking()
-//                    .retrieve(HttpRequest.GET<List<RedditPost>>("/top"), Argument.listOf(RedditPost::class.java))
-//            },
-//            "ReadTimeoutException was expected"
-//        )
-//
-//        Assertions.assertEquals("Read Timeout", thrown.message)
-//    }
+    @Test
+    fun shouldReturnConferenceByIdSuccessfully() {
+        val conferences: List<Conference> = conferenceClient
+            .toBlocking()
+            .retrieve(HttpRequest.GET<List<Conference>>("/all"), Argument.listOf(Conference::class.java))
+
+        Assertions.assertEquals(1, conferences.size, "should return 1 conference")
+
+        val actual: List<Conference> = conferenceClient
+            .toBlocking()
+            .retrieve(HttpRequest.GET<List<Conference>>("/${conferences.first().id}"), Argument.listOf(Conference::class.java))
+
+        Assertions.assertEquals(1, actual.size, "should return 1 conference")
+    }
 }

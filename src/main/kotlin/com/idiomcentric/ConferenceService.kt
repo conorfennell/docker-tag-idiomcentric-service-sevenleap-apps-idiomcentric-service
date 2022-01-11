@@ -23,4 +23,6 @@ class ConferenceService(private val conferenceDao: ConferenceDao) {
     }
 
     suspend fun all(): List<Conference> = conferenceDao.selectAll()
+
+    suspend fun byId(id: UUID): Conference? = conferenceDao.selectById(id)
 }
