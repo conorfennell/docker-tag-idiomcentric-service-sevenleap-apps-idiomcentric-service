@@ -2,6 +2,7 @@ package com.idiomcentric.contollers
 
 import com.idiomcentric.Conference
 import com.idiomcentric.ConferenceService
+import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.security.annotation.Secured
@@ -19,5 +20,8 @@ class ConferenceController(private val conferenceService: ConferenceService) {
     suspend fun all(): List<Conference> = conferenceService.all()
 
     @Get("/{id}")
-    suspend fun byId(id: UUID): Conference? = conferenceService.byId(id)
+    suspend fun byId(id: UUID): HttpResponse<Conference?> = when (val conference = conferenceService.byId(id)) {
+        null -> HttpResponse.notFound()
+        else -> HttpResponse.ok(conference)
+    }
 }
