@@ -11,3 +11,7 @@ data class Conference(
     val createdAt: Instant,
     val updatedAt: Instant
 )
+
+data class CreateConference(
+    val name: String
+)

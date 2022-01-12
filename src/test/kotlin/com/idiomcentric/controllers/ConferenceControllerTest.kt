@@ -1,6 +1,7 @@
 package com.idiomcentric.controllers
 
 import com.idiomcentric.Conference
+import com.idiomcentric.CreateConference
 import com.idiomcentric.IntegrationProvider
 import io.micronaut.core.type.Argument
 import io.micronaut.http.HttpRequest
@@ -59,5 +60,13 @@ class ConferenceControllerTest : IntegrationProvider() {
         )
 
         Assertions.assertEquals("Not Found", thrown.message)
+    }
+
+    @Test
+    fun shouldCreateConference() {
+
+        conferenceClient
+            .toBlocking()
+            .retrieve(HttpRequest.POST<CreateConference>("/create", CreateConference("test")))
     }
 }

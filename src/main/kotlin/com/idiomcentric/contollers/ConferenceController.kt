@@ -2,11 +2,16 @@ package com.idiomcentric.contollers
 
 import com.idiomcentric.Conference
 import com.idiomcentric.ConferenceService
+import com.idiomcentric.CreateConference
 import io.micronaut.http.HttpResponse
+import io.micronaut.http.MediaType
+import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
+import io.micronaut.http.annotation.Post
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
+import java.net.URI
 import java.util.UUID
 
 @Controller("/conferences")
@@ -23,5 +28,11 @@ class ConferenceController(private val conferenceService: ConferenceService) {
     suspend fun byId(id: UUID): HttpResponse<Conference?> = when (val conference = conferenceService.byId(id)) {
         null -> HttpResponse.notFound()
         else -> HttpResponse.ok(conference)
+    }
+
+    @Post("/create", processes = [MediaType.APPLICATION_JSON])
+    suspend fun create(@Body createConference: CreateConference): HttpResponse<Conference?> = when (val conference = conferenceService.create(createConference)) {
+        null -> HttpResponse.badRequest()
+        else -> HttpResponse.created(conference, URI.create("/conferences/${conference.id}"))
     }
 }
