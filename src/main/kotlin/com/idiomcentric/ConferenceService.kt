@@ -26,5 +26,7 @@ class ConferenceService(private val conferenceDao: ConferenceDao) {
 
     suspend fun byId(id: UUID): Conference? = conferenceDao.selectById(id)
 
+    suspend fun deleteById(id: UUID): Int = conferenceDao.deleteById(id)
+
     suspend fun create(createConference: CreateConference): Conference? = conferenceDao.insert(createConference)
 }

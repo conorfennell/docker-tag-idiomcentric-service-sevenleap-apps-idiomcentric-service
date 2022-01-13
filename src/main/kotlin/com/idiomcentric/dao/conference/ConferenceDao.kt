@@ -5,6 +5,7 @@ import com.idiomcentric.CreateConference
 import com.idiomcentric.dao.PostgresConnection
 import jakarta.inject.Singleton
 import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
@@ -18,6 +19,12 @@ class ConferenceDao(private val connection: PostgresConnection) {
         ConferenceTable.select {
             ConferenceTable.id eq id
         }.firstOrNull()?.let(::mapToConference)
+    }
+
+    suspend fun deleteById(id: UUID): Int = connection.query {
+        ConferenceTable.deleteWhere {
+            ConferenceTable.id eq id
+        }
     }
 
     suspend fun insert(createConference: CreateConference): Conference? = connection.query {

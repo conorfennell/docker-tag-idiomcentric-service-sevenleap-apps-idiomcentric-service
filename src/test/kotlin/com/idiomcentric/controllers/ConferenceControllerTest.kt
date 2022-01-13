@@ -64,9 +64,14 @@ class ConferenceControllerTest : IntegrationProvider() {
 
     @Test
     fun shouldCreateConference() {
-
-        conferenceClient
+        val conference: Conference = conferenceClient
             .toBlocking()
-            .retrieve(HttpRequest.POST<CreateConference>("/create", CreateConference("test")))
+            .retrieve(HttpRequest.POST<CreateConference>("/create", CreateConference("test")), Conference::class.java)
+
+        val actual: Conference = conferenceClient
+            .toBlocking()
+            .retrieve(HttpRequest.GET<Conference>("/${conference.id}"), Conference::class.java)
+
+        Assertions.assertEquals(conference, actual, "should return 1 conference")
     }
 }
