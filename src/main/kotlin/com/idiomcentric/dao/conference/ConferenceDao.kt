@@ -9,6 +9,7 @@ import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.update
 import java.time.Instant
 import java.util.UUID
 
@@ -34,6 +35,14 @@ class ConferenceDao(private val connection: PostgresConnection) {
             it[updatedAt] = Instant.now()
             it[createdAt] = Instant.now()
         }.resultedValues?.firstOrNull()?.let(::mapToConference)
+    }
+
+    suspend fun update(updateConference: Conference): Int = connection.query {
+        ConferenceTable.update({ ConferenceTable.id eq updateConference.id }) {
+            it[name] = updateConference.name
+            it[updatedAt] = Instant.now()
+            it[createdAt] = updateConference.createdAt
+        }
     }
 
     suspend fun selectAll(): List<Conference> = connection.query {

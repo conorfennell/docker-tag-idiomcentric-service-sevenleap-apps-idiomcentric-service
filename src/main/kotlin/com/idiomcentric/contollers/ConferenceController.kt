@@ -11,6 +11,7 @@ import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Delete
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
+import io.micronaut.http.annotation.Put
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 import java.net.URI
@@ -42,5 +43,11 @@ class ConferenceController(private val conferenceService: ConferenceService) {
     suspend fun create(@Body createConference: CreateConference): HttpResponse<Conference?> = when (val conference = conferenceService.create(createConference)) {
         null -> HttpResponse.badRequest()
         else -> HttpResponse.created(conference, URI.create("/conferences/${conference.id}"))
+    }
+
+    @Put("/update", processes = [MediaType.APPLICATION_JSON])
+    suspend fun put(@Body updateConference: Conference): HttpResponse<Conference?> = when (conferenceService.updateById(updateConference)) {
+        0 -> HttpResponse.notFound()
+        else -> HttpResponse.ok<Conference?>().status(HttpStatus.NO_CONTENT)
     }
 }
