@@ -39,15 +39,15 @@ class ConferenceController(private val conferenceService: ConferenceService) {
         else -> HttpResponse.ok<Conference?>().status(HttpStatus.NO_CONTENT)
     }
 
-    @Post("/create", processes = [MediaType.APPLICATION_JSON])
+    @Post(processes = [MediaType.APPLICATION_JSON])
     suspend fun create(@Body createConference: CreateConference): HttpResponse<Conference?> = when (val conference = conferenceService.create(createConference)) {
         null -> HttpResponse.badRequest()
         else -> HttpResponse.created(conference, URI.create("/conferences/${conference.id}"))
     }
 
-    @Put("/update", processes = [MediaType.APPLICATION_JSON])
-    suspend fun put(@Body updateConference: Conference): HttpResponse<Conference?> = when (conferenceService.updateById(updateConference)) {
+    @Put(processes = [MediaType.APPLICATION_JSON])
+    suspend fun put(@Body updateConference: Conference): HttpResponse<Nothing> = when (conferenceService.updateById(updateConference)) {
         0 -> HttpResponse.notFound()
-        else -> HttpResponse.ok<Conference?>().status(HttpStatus.NO_CONTENT)
+        else -> HttpResponse.ok<Nothing>().status(HttpStatus.NO_CONTENT)
     }
 }

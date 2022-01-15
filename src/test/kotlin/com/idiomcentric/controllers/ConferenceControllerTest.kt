@@ -66,12 +66,31 @@ class ConferenceControllerTest : IntegrationProvider() {
     fun shouldCreateConference() {
         val conference: Conference = conferenceClient
             .toBlocking()
-            .retrieve(HttpRequest.POST<CreateConference>("/create", CreateConference("test")), Conference::class.java)
+            .retrieve(HttpRequest.POST<CreateConference>("", CreateConference("test")), Conference::class.java)
 
         val actual: Conference = conferenceClient
             .toBlocking()
             .retrieve(HttpRequest.GET<Conference>("/${conference.id}"), Conference::class.java)
 
         Assertions.assertEquals(conference, actual, "should return 1 conference")
+    }
+
+    @Test
+    fun shouldUpdateConference() {
+        val conference: Conference = conferenceClient
+            .toBlocking()
+            .retrieve(HttpRequest.POST("", CreateConference("test")), Conference::class.java)
+
+        val updatedName = "update-test"
+
+        conferenceClient
+            .toBlocking()
+            .exchange<Conference, Nothing>(HttpRequest.PUT("", conference.copy(name = updatedName)))
+
+        val actual: Conference = conferenceClient
+            .toBlocking()
+            .retrieve(HttpRequest.GET<Conference>("/${conference.id}"), Conference::class.java)
+
+        Assertions.assertEquals(updatedName, actual.name, "should have the name updated for conference")
     }
 }
