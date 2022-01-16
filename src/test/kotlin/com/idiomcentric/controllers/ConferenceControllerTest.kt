@@ -27,7 +27,7 @@ class ConferenceControllerTest : IntegrationProvider() {
     fun shouldReturnAllConferencesSuccessfully() {
         val actual: List<Conference> = conferenceClient
             .toBlocking()
-            .retrieve(HttpRequest.GET<List<Conference>>("/all"), Argument.listOf(Conference::class.java))
+            .retrieve(HttpRequest.GET<List<Conference>>(""), Argument.listOf(Conference::class.java))
 
         Assertions.assertEquals(1, actual.size, "should return 1 conference")
     }
@@ -36,7 +36,7 @@ class ConferenceControllerTest : IntegrationProvider() {
     fun shouldReturnConferenceByIdSuccessfully() {
         val conferences: List<Conference> = conferenceClient
             .toBlocking()
-            .retrieve(HttpRequest.GET<List<Conference>>("/all"), Argument.listOf(Conference::class.java))
+            .retrieve(HttpRequest.GET<List<Conference>>(""), Argument.listOf(Conference::class.java))
 
         Assertions.assertEquals(1, conferences.size, "should return 1 conference")
 
@@ -45,6 +45,21 @@ class ConferenceControllerTest : IntegrationProvider() {
             .retrieve(HttpRequest.GET<Conference>("/${conferences.first().id}"), Conference::class.java)
 
         Assertions.assertEquals(conferences.first(), actual, "should return 1 conference")
+    }
+
+    @Test
+    fun shouldReturn400onMalformedUUID() {
+        val thrown = Assertions.assertThrows(
+            HttpClientResponseException::class.java,
+            {
+                conferenceClient
+                    .toBlocking()
+                    .exchange(HttpRequest.GET<Nothing>("/baduuid"), Conference::class.java)
+            },
+            "HttpClientResponseException Bad Request expected"
+        )
+
+        Assertions.assertEquals("Bad Request", thrown.message)
     }
 
     @Test

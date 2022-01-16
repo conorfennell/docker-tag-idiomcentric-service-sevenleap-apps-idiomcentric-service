@@ -3,6 +3,8 @@ package com.idiomcentric.contollers
 import com.idiomcentric.Conference
 import com.idiomcentric.ConferenceService
 import com.idiomcentric.CreateConference
+import com.idiomcentric.Deletion
+import com.idiomcentric.Retrieval
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
@@ -24,19 +26,19 @@ class ConferenceController(private val conferenceService: ConferenceService) {
     @Get("/random")
     fun randomConference(): Conference = conferenceService.randomConference()
 
-    @Get("/all")
+    @Get
     suspend fun all(): List<Conference> = conferenceService.all()
 
     @Get("/{id}")
-    suspend fun byId(id: UUID): HttpResponse<Conference?> = when (val conference = conferenceService.byId(id)) {
-        null -> HttpResponse.notFound()
-        else -> HttpResponse.ok(conference)
+    suspend fun byId(id: UUID): HttpResponse<Conference?> = when (val retrieval = conferenceService.byId(id)) {
+        is Retrieval.NotFound -> HttpResponse.notFound()
+        is Retrieval.Retrieved -> HttpResponse.ok(retrieval.conference)
     }
 
     @Delete("/{id}")
-    suspend fun deleteById(id: UUID): HttpResponse<Conference?> = when (conferenceService.deleteById(id)) {
-        0 -> HttpResponse.notFound()
-        else -> HttpResponse.ok<Conference?>().status(HttpStatus.NO_CONTENT)
+    suspend fun deleteById(id: UUID): HttpResponse<Nothing> = when (conferenceService.deleteById(id)) {
+        Deletion.Deleted -> HttpResponse.ok<Nothing>().status(HttpStatus.NO_CONTENT)
+        Deletion.NotFound -> HttpResponse.notFound()
     }
 
     @Post(processes = [MediaType.APPLICATION_JSON])
