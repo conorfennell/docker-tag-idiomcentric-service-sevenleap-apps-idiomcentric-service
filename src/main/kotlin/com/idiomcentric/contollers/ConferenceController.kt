@@ -4,6 +4,7 @@ import com.idiomcentric.Conference
 import com.idiomcentric.ConferenceService
 import com.idiomcentric.CreateConference
 import com.idiomcentric.Deletion
+import com.idiomcentric.PatchConference
 import com.idiomcentric.Retrieval
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
@@ -12,6 +13,7 @@ import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Delete
 import io.micronaut.http.annotation.Get
+import io.micronaut.http.annotation.Patch
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Put
 import io.micronaut.security.annotation.Secured
@@ -49,6 +51,12 @@ class ConferenceController(private val conferenceService: ConferenceService) {
 
     @Put(processes = [MediaType.APPLICATION_JSON])
     suspend fun put(@Body updateConference: Conference): HttpResponse<Nothing> = when (conferenceService.updateById(updateConference)) {
+        0 -> HttpResponse.notFound()
+        else -> HttpResponse.ok<Nothing>().status(HttpStatus.NO_CONTENT)
+    }
+
+    @Patch(processes = [MediaType.APPLICATION_JSON])
+    suspend fun patch(@Body patchConference: PatchConference): HttpResponse<Nothing> = when (conferenceService.partialUpdateById(patchConference)) {
         0 -> HttpResponse.notFound()
         else -> HttpResponse.ok<Nothing>().status(HttpStatus.NO_CONTENT)
     }

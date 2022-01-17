@@ -12,6 +12,13 @@ data class Conference(
     val updatedAt: Instant
 )
 
+@Introspected
+data class PatchConference(
+    val id: UUID,
+    val name: String?,
+)
+
+@Introspected
 data class CreateConference(
     val name: String
 )

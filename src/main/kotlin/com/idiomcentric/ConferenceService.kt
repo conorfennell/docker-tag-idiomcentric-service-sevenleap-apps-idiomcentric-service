@@ -37,6 +37,8 @@ class ConferenceService(private val conferenceDao: ConferenceDao) {
     suspend fun create(createConference: CreateConference): Conference? = conferenceDao.insert(createConference)
 
     suspend fun updateById(updateConference: Conference): Int = conferenceDao.update(updateConference)
+
+    suspend fun partialUpdateById(updateConference: PatchConference): Int = conferenceDao.partialUpdate(updateConference)
 }
 
 sealed interface Deletion {

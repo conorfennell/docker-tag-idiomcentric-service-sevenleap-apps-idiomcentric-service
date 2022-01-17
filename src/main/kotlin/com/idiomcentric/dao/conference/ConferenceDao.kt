@@ -2,6 +2,7 @@ package com.idiomcentric.dao.conference
 
 import com.idiomcentric.Conference
 import com.idiomcentric.CreateConference
+import com.idiomcentric.PatchConference
 import com.idiomcentric.dao.PostgresConnection
 import jakarta.inject.Singleton
 import org.jetbrains.exposed.sql.ResultRow
@@ -42,6 +43,15 @@ class ConferenceDao(private val connection: PostgresConnection) {
             it[name] = updateConference.name
             it[updatedAt] = Instant.now()
             it[createdAt] = updateConference.createdAt
+        }
+    }
+
+    suspend fun partialUpdate(partialConference: PatchConference): Int = connection.query {
+        ConferenceTable.update({ ConferenceTable.id eq partialConference.id }) {
+            if (partialConference.name != null) {
+                it[name] = partialConference.name
+            }
+            it[updatedAt] = Instant.now()
         }
     }
 
