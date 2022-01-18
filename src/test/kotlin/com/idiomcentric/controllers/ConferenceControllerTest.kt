@@ -3,6 +3,7 @@ package com.idiomcentric.controllers
 import com.idiomcentric.Conference
 import com.idiomcentric.CreateConference
 import com.idiomcentric.IntegrationProvider
+import com.idiomcentric.PatchConference
 import io.micronaut.core.type.Argument
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.client.HttpClient
@@ -101,6 +102,25 @@ class ConferenceControllerTest : IntegrationProvider() {
         conferenceClient
             .toBlocking()
             .exchange<Conference, Nothing>(HttpRequest.PUT("", conference.copy(name = updatedName)))
+
+        val actual: Conference = conferenceClient
+            .toBlocking()
+            .retrieve(HttpRequest.GET<Conference>("/${conference.id}"), Conference::class.java)
+
+        Assertions.assertEquals(updatedName, actual.name, "should have the name updated for conference")
+    }
+
+    @Test
+    fun shouldPatchConference() {
+        val conference: Conference = conferenceClient
+            .toBlocking()
+            .retrieve(HttpRequest.POST("", CreateConference("test")), Conference::class.java)
+
+        val updatedName = "update-test"
+
+        conferenceClient
+            .toBlocking()
+            .exchange<PatchConference, Nothing>(HttpRequest.PATCH("", PatchConference(conference.id, updatedName)))
 
         val actual: Conference = conferenceClient
             .toBlocking()
