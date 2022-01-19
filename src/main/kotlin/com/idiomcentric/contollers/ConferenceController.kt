@@ -13,6 +13,7 @@ import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Delete
 import io.micronaut.http.annotation.Get
+import io.micronaut.http.annotation.Head
 import io.micronaut.http.annotation.Patch
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Put
@@ -59,5 +60,11 @@ class ConferenceController(private val conferenceService: ConferenceService) {
     suspend fun patch(@Body patchConference: PatchConference): HttpResponse<Nothing> = when (conferenceService.partialUpdateById(patchConference)) {
         0 -> HttpResponse.notFound()
         else -> HttpResponse.ok<Nothing>().status(HttpStatus.NO_CONTENT)
+    }
+
+    @Head("/{id}")
+    suspend fun headById(id: UUID): HttpResponse<Nothing> = when (conferenceService.byId(id)) {
+        is Retrieval.NotFound -> HttpResponse.notFound()
+        is Retrieval.Retrieved -> HttpResponse.ok()
     }
 }
