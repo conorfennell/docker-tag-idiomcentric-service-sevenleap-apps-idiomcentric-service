@@ -32,7 +32,7 @@ class ConferenceController(private val conferenceService: ConferenceService) {
     @Get
     suspend fun all(): List<Conference> = conferenceService.all()
 
-    @Get("/{id}")
+    @Get("/{id}", headRoute = false)
     suspend fun byId(id: UUID): HttpResponse<Conference?> = when (val retrieval = conferenceService.byId(id)) {
         is Retrieval.NotFound -> HttpResponse.notFound()
         is Retrieval.Retrieved -> HttpResponse.ok(retrieval.conference)
@@ -62,8 +62,7 @@ class ConferenceController(private val conferenceService: ConferenceService) {
         else -> HttpResponse.ok<Nothing>().status(HttpStatus.NO_CONTENT)
     }
 
-    // Want this path to be "/{id}". Is not working when @Get has the same path
-    @Head("/head/{id}")
+    @Head("/{id}")
     suspend fun headById(id: UUID): HttpResponse<Nothing> = when (conferenceService.byId(id)) {
         is Retrieval.NotFound -> HttpResponse.notFound()
         is Retrieval.Retrieved -> HttpResponse.ok()

@@ -136,7 +136,7 @@ class ConferenceControllerTest : IntegrationProvider() {
             .toBlocking()
             .retrieve(HttpRequest.POST("", CreateConference("test")), Conference::class.java)
 
-        val headRequest: HttpRequest<*> = HttpRequest.HEAD("/head/${conference.id}")
+        val headRequest: HttpRequest<*> = HttpRequest.HEAD("/${conference.id}")
 
         val response = conferenceClient.toBlocking().exchange(headRequest, ByteArray::class.java)
 
