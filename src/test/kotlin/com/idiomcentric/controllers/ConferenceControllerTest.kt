@@ -6,6 +6,7 @@ import com.idiomcentric.IntegrationProvider
 import com.idiomcentric.PatchConference
 import io.micronaut.core.type.Argument
 import io.micronaut.http.HttpRequest
+import io.micronaut.http.HttpStatus
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.client.exceptions.HttpClientResponseException
@@ -127,5 +128,18 @@ class ConferenceControllerTest : IntegrationProvider() {
             .retrieve(HttpRequest.GET<Conference>("/${conference.id}"), Conference::class.java)
 
         Assertions.assertEquals(updatedName, actual.name, "should have the name updated for conference")
+    }
+
+    @Test
+    fun shouldHeadConference() {
+        val conference: Conference = conferenceClient
+            .toBlocking()
+            .retrieve(HttpRequest.POST("", CreateConference("test")), Conference::class.java)
+
+        val headRequest: HttpRequest<*> = HttpRequest.HEAD("/head/${conference.id}")
+
+        val response = conferenceClient.toBlocking().exchange(headRequest, ByteArray::class.java)
+
+        Assertions.assertEquals(response.status, HttpStatus.OK, "should return 200")
     }
 }

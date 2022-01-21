@@ -62,7 +62,8 @@ class ConferenceController(private val conferenceService: ConferenceService) {
         else -> HttpResponse.ok<Nothing>().status(HttpStatus.NO_CONTENT)
     }
 
-    @Head("/{id}")
+    // Want this path to be "/{id}". Is not working when @Get has the same path
+    @Head("/head/{id}")
     suspend fun headById(id: UUID): HttpResponse<Nothing> = when (conferenceService.byId(id)) {
         is Retrieval.NotFound -> HttpResponse.notFound()
         is Retrieval.Retrieved -> HttpResponse.ok()
