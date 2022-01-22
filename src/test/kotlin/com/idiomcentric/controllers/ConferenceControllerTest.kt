@@ -15,6 +15,7 @@ import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import java.time.Instant
 import java.util.UUID
 
 @MicronautTest
@@ -83,7 +84,7 @@ class ConferenceControllerTest : IntegrationProvider() {
     fun shouldCreateConference() {
         val conference: Conference = conferenceClient
             .toBlocking()
-            .retrieve(HttpRequest.POST<CreateConference>("", CreateConference("test")), Conference::class.java)
+            .retrieve(HttpRequest.POST<CreateConference>("", CreateConference("test", Instant.now())), Conference::class.java)
 
         val actual: Conference = conferenceClient
             .toBlocking()
@@ -96,7 +97,7 @@ class ConferenceControllerTest : IntegrationProvider() {
     fun shouldUpdateConference() {
         val conference: Conference = conferenceClient
             .toBlocking()
-            .retrieve(HttpRequest.POST("", CreateConference("test")), Conference::class.java)
+            .retrieve(HttpRequest.POST("", CreateConference("test", Instant.now())), Conference::class.java)
 
         val updatedName = "update-test"
 
@@ -115,13 +116,13 @@ class ConferenceControllerTest : IntegrationProvider() {
     fun shouldPatchConference() {
         val conference: Conference = conferenceClient
             .toBlocking()
-            .retrieve(HttpRequest.POST("", CreateConference("test")), Conference::class.java)
+            .retrieve(HttpRequest.POST("", CreateConference("test", Instant.now())), Conference::class.java)
 
         val updatedName = "update-test"
 
         conferenceClient
             .toBlocking()
-            .exchange<PatchConference, Nothing>(HttpRequest.PATCH("", PatchConference(conference.id, updatedName)))
+            .exchange<PatchConference, Nothing>(HttpRequest.PATCH("", PatchConference(conference.id, updatedName, Instant.now())))
 
         val actual: Conference = conferenceClient
             .toBlocking()
@@ -134,7 +135,7 @@ class ConferenceControllerTest : IntegrationProvider() {
     fun shouldHeadConference() {
         val conference: Conference = conferenceClient
             .toBlocking()
-            .retrieve(HttpRequest.POST("", CreateConference("test")), Conference::class.java)
+            .retrieve(HttpRequest.POST("", CreateConference("test", Instant.now())), Conference::class.java)
 
         val headRequest: HttpRequest<*> = HttpRequest.HEAD("/${conference.id}")
 

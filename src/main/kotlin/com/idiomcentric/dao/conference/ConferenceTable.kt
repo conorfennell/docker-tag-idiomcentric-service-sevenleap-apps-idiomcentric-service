@@ -6,6 +6,7 @@ import org.jetbrains.exposed.sql.javatime.timestamp
 object ConferenceTable : Table("CONFERENCE") {
     val id = uuid("ID")
     val name = varchar("NAME", length = 255)
+    val startAt = timestamp("START_AT")
     val createdAt = timestamp("CREATED_AT")
     val updatedAt = timestamp("UPDATED_AT")
 

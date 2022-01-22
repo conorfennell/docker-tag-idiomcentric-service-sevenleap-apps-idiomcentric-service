@@ -33,6 +33,7 @@ class ConferenceDao(private val connection: PostgresConnection) {
         ConferenceTable.insert {
             it[id] = UUID.randomUUID()
             it[name] = createConference.name
+            it[startAt] = createConference.startAt
             it[updatedAt] = Instant.now()
             it[createdAt] = Instant.now()
         }.resultedValues?.firstOrNull()?.let(::mapToConference)
@@ -41,6 +42,7 @@ class ConferenceDao(private val connection: PostgresConnection) {
     suspend fun update(updateConference: Conference): Int = connection.query {
         ConferenceTable.update({ ConferenceTable.id eq updateConference.id }) {
             it[name] = updateConference.name
+            it[startAt] = updateConference.startAt
             it[updatedAt] = Instant.now()
             it[createdAt] = updateConference.createdAt
         }
@@ -48,9 +50,8 @@ class ConferenceDao(private val connection: PostgresConnection) {
 
     suspend fun partialUpdate(partialConference: PatchConference): Int = connection.query {
         ConferenceTable.update({ ConferenceTable.id eq partialConference.id }) {
-            if (partialConference.name != null) {
-                it[name] = partialConference.name
-            }
+            if (partialConference.name != null) { it[name] = partialConference.name }
+            if (partialConference.startAt != null) { it[startAt] = partialConference.startAt }
             it[updatedAt] = Instant.now()
         }
     }
@@ -62,6 +63,7 @@ class ConferenceDao(private val connection: PostgresConnection) {
     private fun mapToConference(row: ResultRow): Conference = Conference(
         id = row[ConferenceTable.id],
         name = row[ConferenceTable.name],
+        startAt = row[ConferenceTable.startAt],
         updatedAt = row[ConferenceTable.updatedAt],
         createdAt = row[ConferenceTable.createdAt],
     )

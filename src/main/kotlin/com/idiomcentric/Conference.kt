@@ -8,6 +8,7 @@ import java.util.UUID
 data class Conference(
     val id: UUID,
     val name: String,
+    val startAt: Instant,
     val createdAt: Instant,
     val updatedAt: Instant
 )
@@ -16,9 +17,11 @@ data class Conference(
 data class PatchConference(
     val id: UUID,
     val name: String?,
+    val startAt: Instant?,
 )
 
 @Introspected
 data class CreateConference(
-    val name: String
+    val name: String,
+    val startAt: Instant
 )

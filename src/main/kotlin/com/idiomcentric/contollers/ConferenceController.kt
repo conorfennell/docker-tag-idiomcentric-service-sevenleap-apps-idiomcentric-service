@@ -26,9 +26,6 @@ import java.util.UUID
 @Secured(SecurityRule.IS_ANONYMOUS)
 class ConferenceController(private val conferenceService: ConferenceService) {
 
-    @Get("/random")
-    fun randomConference(): Conference = conferenceService.randomConference()
-
     @Get
     suspend fun all(): List<Conference> = conferenceService.all()
 
