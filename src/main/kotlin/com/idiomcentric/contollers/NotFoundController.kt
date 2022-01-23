@@ -19,5 +19,5 @@ class NotFoundController {
     }
 
     @Get("/example")
-    fun blah(): HttpResponse<Nothing> = HttpResponse.notFound<Nothing>()
+    fun notFoundExample(): HttpResponse<Nothing> = HttpResponse.notFound()
 }

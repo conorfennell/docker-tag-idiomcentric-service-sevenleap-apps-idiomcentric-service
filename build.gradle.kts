@@ -14,6 +14,7 @@ val mockServerClientVersion: String by project
 plugins {
     kotlin("jvm")
     kotlin("kapt")
+    jacoco
     id("com.github.ben-manes.versions")
     id("com.github.johnrengelman.shadow")
     id("io.micronaut.application")
@@ -94,4 +95,11 @@ kotlin {
         (this as JavaToolchainSpec)
         this.languageVersion.set(JavaLanguageVersion.of(11))
     }
+}
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
+}
+tasks.jacocoTestReport {
+    dependsOn(tasks.test) // tests are required to run before generating the report
 }
