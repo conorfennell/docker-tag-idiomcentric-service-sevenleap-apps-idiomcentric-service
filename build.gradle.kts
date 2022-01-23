@@ -97,7 +97,6 @@ kotlin {
     }
 }
 
-
 tasks.jacocoTestReport {
     reports {
         xml.required.set(true)
