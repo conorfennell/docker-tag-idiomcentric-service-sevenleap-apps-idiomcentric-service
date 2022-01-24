@@ -17,6 +17,7 @@ import io.micronaut.http.annotation.Head
 import io.micronaut.http.annotation.Patch
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Put
+import io.micronaut.http.annotation.Status
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 import java.net.URI
@@ -64,4 +65,8 @@ class ConferenceController(private val conferenceService: ConferenceService) {
         is Retrieval.NotFound -> HttpResponse.notFound()
         is Retrieval.Retrieved -> HttpResponse.ok()
     }
+
+    @Status(HttpStatus.CONFLICT)
+    @Get("/conflict")
+    suspend fun conflict(): List<Conference> = conferenceService.all()
 }

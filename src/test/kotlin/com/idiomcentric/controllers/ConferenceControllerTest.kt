@@ -143,4 +143,19 @@ class ConferenceControllerTest : IntegrationProvider() {
 
         Assertions.assertEquals(response.status, HttpStatus.OK, "should return 200")
     }
+
+    @Test
+    fun shouldReturnConflictUsingStatusAnnotation() {
+        val thrown = Assertions.assertThrows(
+            HttpClientResponseException::class.java,
+            {
+                conferenceClient
+                    .toBlocking()
+                    .exchange(HttpRequest.GET<Nothing>("/conflict"), ByteArray::class.java)
+            },
+            "HttpClientResponseException Conflict"
+        )
+
+        Assertions.assertEquals("Conflict", thrown.message)
+    }
 }
