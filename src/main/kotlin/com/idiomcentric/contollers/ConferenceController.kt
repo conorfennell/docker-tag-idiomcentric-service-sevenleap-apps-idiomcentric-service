@@ -11,6 +11,7 @@ import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
+import io.micronaut.http.annotation.CookieValue
 import io.micronaut.http.annotation.Delete
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Head
@@ -69,4 +70,9 @@ class ConferenceController(private val conferenceService: ConferenceService) {
     @Status(HttpStatus.CONFLICT)
     @Get("/conflict")
     suspend fun conflict(): List<Conference> = conferenceService.all()
+
+    @Get("/cookie")
+    suspend fun cookie(@CookieValue("simple") cookies: String?): String? {
+        return cookies
+    }
 }

@@ -10,6 +10,7 @@ import io.micronaut.http.HttpStatus
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.client.exceptions.HttpClientResponseException
+import io.micronaut.http.netty.cookies.NettyCookie
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
@@ -157,5 +158,18 @@ class ConferenceControllerTest : IntegrationProvider() {
         )
 
         Assertions.assertEquals("Conflict", thrown.message)
+    }
+
+    @Test
+    fun shouldReturnSetCookie() {
+        val request = HttpRequest
+            .GET<Nothing>("/cookie")
+            .cookie(NettyCookie("simple", "shouldReturnSetCookie"))
+
+        val response = conferenceClient
+            .toBlocking()
+            .exchange(request, String::class.java)
+
+        Assertions.assertEquals("shouldReturnSetCookie", response.body())
     }
 }
