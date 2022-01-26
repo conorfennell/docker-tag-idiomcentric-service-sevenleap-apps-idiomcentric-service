@@ -172,4 +172,16 @@ class ConferenceControllerTest : IntegrationProvider() {
 
         Assertions.assertEquals("shouldReturnSetCookie", response.body())
     }
+
+    @Test
+    fun shouldReturnSetHeader() {
+        val request = HttpRequest
+            .GET<Nothing>("/header").header("simple", "shouldReturnHeader")
+
+        val response = conferenceClient
+            .toBlocking()
+            .exchange(request, String::class.java)
+
+        Assertions.assertEquals("shouldReturnHeader", response.body())
+    }
 }

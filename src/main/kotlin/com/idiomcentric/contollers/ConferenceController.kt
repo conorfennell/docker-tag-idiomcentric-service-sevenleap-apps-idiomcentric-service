@@ -15,6 +15,7 @@ import io.micronaut.http.annotation.CookieValue
 import io.micronaut.http.annotation.Delete
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Head
+import io.micronaut.http.annotation.Header
 import io.micronaut.http.annotation.Patch
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Put
@@ -74,5 +75,10 @@ class ConferenceController(private val conferenceService: ConferenceService) {
     @Get("/cookie")
     suspend fun cookie(@CookieValue("simple") cookies: String?): String? {
         return cookies
+    }
+
+    @Get("/header")
+    suspend fun header(@Header("simple") header: String?): String? {
+        return header
     }
 }
