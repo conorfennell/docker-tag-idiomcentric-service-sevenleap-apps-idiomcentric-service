@@ -6,6 +6,7 @@ import com.idiomcentric.CreateConference
 import com.idiomcentric.Deletion
 import com.idiomcentric.PatchConference
 import com.idiomcentric.Retrieval
+import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
@@ -78,7 +79,13 @@ class ConferenceController(private val conferenceService: ConferenceService) {
     }
 
     @Get("/header")
-    suspend fun header(@Header("simple") header: String?): String? {
+    suspend fun header(@Header("simple") header: String?, @Header("user-agent") userAgent: String?): String? {
+
         return header
+    }
+
+    @Get("/rawRequest")
+    suspend fun headers(request: HttpRequest<Any>?): String {
+        return request?.path ?: "null"
     }
 }

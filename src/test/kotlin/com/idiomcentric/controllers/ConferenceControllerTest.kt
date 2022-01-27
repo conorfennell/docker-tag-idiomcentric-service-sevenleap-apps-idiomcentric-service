@@ -184,4 +184,16 @@ class ConferenceControllerTest : IntegrationProvider() {
 
         Assertions.assertEquals("shouldReturnHeader", response.body())
     }
+
+    @Test
+    fun shouldReturnPathFromRawRequest() {
+        val request = HttpRequest
+            .GET<Nothing>("/rawRequest")
+
+        val response = conferenceClient
+            .toBlocking()
+            .exchange(request, String::class.java)
+
+        Assertions.assertEquals("/conferences/rawRequest", response.body())
+    }
 }
