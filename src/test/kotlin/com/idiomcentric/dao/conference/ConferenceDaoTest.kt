@@ -19,7 +19,7 @@ class ConferenceDaoTest : IntegrationProvider() {
     fun shouldReturnAllConferences() {
         runBlocking {
             val conferences = conferenceDao.selectAll()
-            Assertions.assertEquals(1, conferences.size, "should return all conferences")
+            Assertions.assertEquals(2, conferences.size, "should return all conferences")
         }
     }
 }
