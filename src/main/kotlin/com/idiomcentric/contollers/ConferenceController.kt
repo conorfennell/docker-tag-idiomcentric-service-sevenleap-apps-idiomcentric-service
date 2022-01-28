@@ -20,6 +20,7 @@ import io.micronaut.http.annotation.Header
 import io.micronaut.http.annotation.Patch
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Put
+import io.micronaut.http.annotation.QueryValue
 import io.micronaut.http.annotation.Status
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
@@ -31,7 +32,7 @@ import java.util.UUID
 class ConferenceController(private val conferenceService: ConferenceService) {
 
     @Get
-    suspend fun all(): List<Conference> = conferenceService.all()
+    suspend fun all(@QueryValue limit: Int?): List<Conference> = conferenceService.all().take(limit ?: Int.MAX_VALUE)
 
     @Get("/{id}", headRoute = false)
     suspend fun byId(id: UUID): HttpResponse<Conference?> = when (val retrieval = conferenceService.byId(id)) {

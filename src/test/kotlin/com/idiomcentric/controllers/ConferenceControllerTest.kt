@@ -33,6 +33,15 @@ class ConferenceControllerTest : IntegrationProvider() {
             .toBlocking()
             .retrieve(HttpRequest.GET<List<Conference>>(""), Argument.listOf(Conference::class.java))
 
+        Assertions.assertEquals(2, actual.size, "should return 2 conference")
+    }
+
+    @Test
+    fun shouldReturnOneConferencesSuccessfully() {
+        val actual: List<Conference> = conferenceClient
+            .toBlocking()
+            .retrieve(HttpRequest.GET<List<Conference>>("?limit=1"), Argument.listOf(Conference::class.java))
+
         Assertions.assertEquals(1, actual.size, "should return 1 conference")
     }
 
@@ -42,7 +51,7 @@ class ConferenceControllerTest : IntegrationProvider() {
             .toBlocking()
             .retrieve(HttpRequest.GET<List<Conference>>(""), Argument.listOf(Conference::class.java))
 
-        Assertions.assertEquals(1, conferences.size, "should return 1 conference")
+        Assertions.assertEquals(2, conferences.size, "should return 2 conference")
 
         val actual: Conference = conferenceClient
             .toBlocking()
