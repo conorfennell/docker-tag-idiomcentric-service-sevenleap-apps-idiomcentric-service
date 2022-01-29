@@ -1,5 +1,6 @@
 package com.idiomcentric
 
+import com.idiomcentric.contollers.ConferenceQuery
 import com.idiomcentric.dao.conference.ConferenceDao
 import jakarta.inject.Singleton
 import java.util.UUID
@@ -8,6 +9,8 @@ import java.util.UUID
 class ConferenceService(private val conferenceDao: ConferenceDao) {
 
     suspend fun all(): List<Conference> = conferenceDao.selectAll()
+
+    suspend fun filter(query: ConferenceQuery): List<Conference> = conferenceDao.filter(query)
 
     suspend fun byId(id: UUID): Retrieval = when (val conference = conferenceDao.selectById(id)) {
         null -> Retrieval.NotFound

@@ -32,7 +32,7 @@ import java.util.UUID
 class ConferenceController(private val conferenceService: ConferenceService) {
 
     @Get
-    suspend fun all(@QueryValue limit: Int?): List<Conference> = conferenceService.all().take(limit ?: Int.MAX_VALUE)
+    suspend fun all(@QueryValue limit: Int?): List<Conference> = conferenceService.filter(ConferenceQuery(limit))
 
     @Get("/{id}", headRoute = false)
     suspend fun byId(id: UUID): HttpResponse<Conference?> = when (val retrieval = conferenceService.byId(id)) {
@@ -90,3 +90,7 @@ class ConferenceController(private val conferenceService: ConferenceService) {
         return request?.path ?: "null"
     }
 }
+
+data class ConferenceQuery(
+    val limit: Int?
+)

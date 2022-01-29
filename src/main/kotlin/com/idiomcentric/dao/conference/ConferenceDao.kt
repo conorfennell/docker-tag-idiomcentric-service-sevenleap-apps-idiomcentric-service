@@ -3,6 +3,7 @@ package com.idiomcentric.dao.conference
 import com.idiomcentric.Conference
 import com.idiomcentric.CreateConference
 import com.idiomcentric.PatchConference
+import com.idiomcentric.contollers.ConferenceQuery
 import com.idiomcentric.dao.PostgresConnection
 import jakarta.inject.Singleton
 import org.jetbrains.exposed.sql.ResultRow
@@ -58,6 +59,12 @@ class ConferenceDao(private val connection: PostgresConnection) {
 
     suspend fun selectAll(): List<Conference> = connection.query {
         ConferenceTable.selectAll().map(::mapToConference)
+    }
+
+    suspend fun filter(conferenceQuery: ConferenceQuery): List<Conference> = connection.query {
+        ConferenceTable.selectAll()
+            .limit(conferenceQuery.limit ?: 10)
+            .map(::mapToConference)
     }
 
     private fun mapToConference(row: ResultRow): Conference = Conference(
