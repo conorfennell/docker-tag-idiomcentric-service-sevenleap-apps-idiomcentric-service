@@ -173,7 +173,7 @@ class ConferenceControllerTest : IntegrationProvider() {
     fun shouldReturnSetCookie() {
         val request = HttpRequest
             .GET<Nothing>("/cookie")
-            .cookie(NettyCookie("simple", "shouldReturnSetCookie"))
+            .cookie(NettyCookie("simple", "shouldReturnSetCookie").httpOnly(true))
 
         val response = conferenceClient
             .toBlocking()
