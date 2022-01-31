@@ -13,6 +13,7 @@ import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.update
 import java.time.Instant
+import java.time.temporal.ChronoUnit
 import java.util.UUID
 
 @Singleton
@@ -34,7 +35,7 @@ class ConferenceDao(private val connection: PostgresConnection) {
         ConferenceTable.insert {
             it[id] = UUID.randomUUID()
             it[name] = createConference.name
-            it[startAt] = createConference.startAt
+            it[startAt] = createConference.startAt.truncatedTo(ChronoUnit.MILLIS)
             it[updatedAt] = Instant.now()
             it[createdAt] = Instant.now()
         }.resultedValues?.firstOrNull()?.let(::mapToConference)

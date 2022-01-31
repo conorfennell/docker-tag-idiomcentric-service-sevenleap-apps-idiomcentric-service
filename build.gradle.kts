@@ -1,6 +1,7 @@
 val hikaricpVersion: String by project
 val junitJupiterEngine: String by project
 val jetbrainsExposedVersion: String by project
+val koTestVersion: String by project
 val kotlinLoggingVersion: String by project
 val kotlinVersion: String by project
 val kotlinxCoroutinesVersion: String by project
@@ -76,6 +77,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:$kotlinxCoroutinesVersion")
     runtimeOnly("org.postgresql:postgresql")
 
+    testImplementation("io.kotest:kotest-property:$koTestVersion")
     testImplementation("io.micronaut.test:micronaut-test-junit5:$micronautTestJunit5Version")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterEngine")
     testImplementation("org.junit.jupiter:junit-jupiter-api")

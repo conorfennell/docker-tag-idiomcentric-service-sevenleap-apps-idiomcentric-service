@@ -4,6 +4,12 @@ import com.idiomcentric.Conference
 import com.idiomcentric.CreateConference
 import com.idiomcentric.IntegrationProvider
 import com.idiomcentric.PatchConference
+import io.kotest.property.Arb
+import io.kotest.property.arbitrary.arbitrary
+import io.kotest.property.arbitrary.instant
+import io.kotest.property.arbitrary.next
+import io.kotest.property.arbitrary.string
+import io.kotest.property.arbitrary.uuid
 import io.micronaut.core.type.Argument
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpStatus
@@ -16,6 +22,7 @@ import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import java.time.Duration
 import java.time.Instant
 import java.util.UUID
 
@@ -92,9 +99,11 @@ class ConferenceControllerTest : IntegrationProvider() {
 
     @Test
     fun shouldCreateConference() {
+        val createConference = ArbCreateConference.next()
+
         val conference: Conference = conferenceClient
             .toBlocking()
-            .retrieve(HttpRequest.POST<CreateConference>("", CreateConference("test", Instant.now())), Conference::class.java)
+            .retrieve(HttpRequest.POST<CreateConference>("", createConference), Conference::class.java)
 
         val actual: Conference = conferenceClient
             .toBlocking()
@@ -205,4 +214,28 @@ class ConferenceControllerTest : IntegrationProvider() {
 
         Assertions.assertEquals("/conferences/rawRequest", response.body())
     }
+}
+
+val ArbConference = arbitrary {
+    val id = Arb.uuid().bind()
+    val name = Arb.string(10..12).bind()
+    val startAt = Arb.instant().bind()
+    val updatedAt = Arb.instant().bind()
+    val createdAt = Arb.instant().bind()
+    Conference(
+        id = id,
+        name = name,
+        startAt = startAt,
+        updatedAt = updatedAt,
+        createdAt = createdAt
+    )
+}
+
+val ArbCreateConference = arbitrary {
+    val name = Arb.string(10..12).bind()
+    val startAt = Arb.instant(Instant.now(), Instant.now().plusSeconds(Duration.ofDays(365).toSeconds())).bind()
+    CreateConference(
+        name = name,
+        startAt = startAt,
+    )
 }
