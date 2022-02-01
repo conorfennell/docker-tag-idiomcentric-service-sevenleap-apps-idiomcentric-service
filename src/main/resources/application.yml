@@ -20,6 +20,37 @@ micronaut:
       charset: 'UTF-8'
       expire-after-write: 10m
 
+endpoints:
+  health:
+    enabled: true
+    sensitive: false
+    details-visible: ANONYMOUS
+  beans:
+    enabled: true
+    sensitive: false
+  info:
+    enabled: true
+    sensitive: false
+  refresh:
+    enabled: true
+    sensitive: false
+  routes:
+    enabled: true
+    sensitive: false
+  loggers:
+    enabled: true
+    sensitive: false
+  stop:
+    enabled: true
+    sensitive: false
+  env:
+    enabled: true
+    sensitive: false
+  threaddump:
+    enabled: true
+    sensitive: false
+
+
 datasources:
   default:
     port: 5432
