@@ -101,15 +101,17 @@ class ConferenceControllerTest : IntegrationProvider() {
     fun shouldCreateConference() {
         val createConference = ArbCreateConference.next()
 
-        val conference: Conference = conferenceClient
-            .toBlocking()
-            .retrieve(HttpRequest.POST<CreateConference>("", createConference), Conference::class.java)
+        repeat(10) {
+            conferenceClient
+                .toBlocking()
+                .retrieve(HttpRequest.POST<CreateConference>("", createConference), Conference::class.java)
+        }
 
-        val actual: Conference = conferenceClient
+        val conferences: List<Conference> = conferenceClient
             .toBlocking()
-            .retrieve(HttpRequest.GET<Conference>("/${conference.id}"), Conference::class.java)
+            .retrieve(HttpRequest.GET<List<Conference>>(""), Argument.listOf(Conference::class.java))
 
-        Assertions.assertEquals(conference, actual, "should return 1 conference")
+        Assertions.assertEquals(10, conferences.size, "should return 10 conference")
     }
 
     @Test
