@@ -14,6 +14,7 @@ open class RedditJob(private val redditClient: RedditClient) {
     @Scheduled(fixedDelay = "\${jobs.reddit.fixedDelay}")
     fun execute() {
         val posts = redditClient.fetchTopPosts()
-        logger.info(posts.toString())
+
+        logger.info(posts.collectList().block().toString())
     }
 }

@@ -7,7 +7,12 @@ import io.micronaut.http.client.HttpClient
 import io.micronaut.http.uri.UriBuilder
 import io.micronaut.retry.annotation.Retryable
 import jakarta.inject.Singleton
+import mu.KLogger
+import mu.KotlinLogging
+import reactor.core.publisher.Flux
 import java.net.URI
+
+val logger: KLogger = KotlinLogging.logger {}
 
 @Singleton
 @CacheConfig("headlines")
@@ -27,9 +32,10 @@ open class RedditClientImpl(
 
     @Retryable(attempts = "10", delay = "200ms")
     @Cacheable
-    override fun fetchTopPosts(): List<RedditPost> {
+    override fun fetchTopPosts(): Flux<RedditPost> {
         val request = HttpRequest.GET<RedditResponse>(uri)
-        return httpClient.toBlocking()
-            .retrieve(request, RedditResponse::class.java).data.children.map { it.data }
+
+        logger.info("querying reddit")
+        return Flux.from(httpClient.retrieve(request, RedditResponse::class.java)).flatMapIterable { it.data.children.map { child -> child.data } }
     }
 }

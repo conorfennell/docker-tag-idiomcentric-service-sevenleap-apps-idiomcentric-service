@@ -16,10 +16,10 @@ import reactor.core.publisher.Mono
 open class RedditController(private val redditLowLevelClient: RedditClient) {
 
     @Get("/top")
-    fun reddit(): List<RedditPost> = redditLowLevelClient.fetchTopPosts()
+    fun reddit(): Flux<RedditPost> = redditLowLevelClient.fetchTopPosts()
 
     @Get("/cookie")
-    fun redditCookie(): HttpResponse<List<RedditPost>> {
+    fun redditCookie(): HttpResponse<Flux<RedditPost>> {
         val response = HttpResponse.ok(redditLowLevelClient.fetchTopPosts())
 
         response.cookie(NettyCookie("simple", "simple").httpOnly(true))

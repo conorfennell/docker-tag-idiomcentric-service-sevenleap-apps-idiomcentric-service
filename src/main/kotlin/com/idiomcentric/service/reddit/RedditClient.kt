@@ -1,5 +1,7 @@
 package com.idiomcentric.service.reddit
 
+import reactor.core.publisher.Flux
+
 interface RedditClient {
-    fun fetchTopPosts(): List<RedditPost>
+    fun fetchTopPosts(): Flux<RedditPost>
 }
