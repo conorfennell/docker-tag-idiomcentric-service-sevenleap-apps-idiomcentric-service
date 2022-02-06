@@ -50,6 +50,10 @@ class RedditControllerTest : IntegrationProvider() {
                     .withBody(loadResource("200_r_worldnews_top_json_ten.json"), MediaType.APPLICATION_JSON)
             )
 
+        val string: String = redditClient
+            .toBlocking()
+            .retrieve(HttpRequest.GET<String>("/top"))
+
         val actual: List<RedditPost> = redditClient
             .toBlocking()
             .retrieve(HttpRequest.GET<List<RedditPost>>("/top"), Argument.listOf(RedditPost::class.java))
