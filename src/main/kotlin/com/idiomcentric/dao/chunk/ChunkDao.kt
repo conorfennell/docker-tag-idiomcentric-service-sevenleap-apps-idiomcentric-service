@@ -36,7 +36,6 @@ class ChunkDao(private val connection: PostgresConnection) {
 
     suspend fun selectAll(): List<Chunk> = connection.query {
 
-
         ChunkTable.selectAll().map(::mapToChunk)
     }
 
