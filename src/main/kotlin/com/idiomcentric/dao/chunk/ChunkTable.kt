@@ -2,6 +2,8 @@ package com.idiomcentric.dao.chunk
 
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.timestamp
+import java.time.Instant
+import java.util.UUID
 
 object ChunkTable : Table("CHUNK") {
     val id = uuid("ID")
@@ -12,3 +14,11 @@ object ChunkTable : Table("CHUNK") {
 
     override val primaryKey = PrimaryKey(id)
 }
+
+data class Chunk(
+    val id: UUID,
+    val title: String,
+    val text: String,
+    val createdAt: Instant,
+    val updatedAt: Instant,
+)
