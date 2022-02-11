@@ -19,6 +19,7 @@ object ChunkEncodeTable : Table("CHUNK_ENCODE") {
 
 data class ChunkEncode(
     val id: UUID,
+    val chunkId: UUID,
     val question: String,
     val answer: String,
     val createdAt: Instant,
