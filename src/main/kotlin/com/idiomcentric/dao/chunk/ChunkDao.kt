@@ -28,7 +28,7 @@ class ChunkDao(private val connection: PostgresConnection) {
     suspend fun update(updateChunk: Chunk): Int = connection.query {
         ChunkTable.update({ ChunkTable.id eq updateChunk.id }) {
             it[title] = updateChunk.title
-            it[text] = updateChunk.text
+            it[body] = updateChunk.body
             it[updatedAt] = Instant.now()
             it[createdAt] = updateChunk.createdAt
         }
@@ -42,7 +42,7 @@ class ChunkDao(private val connection: PostgresConnection) {
     private fun mapToChunk(row: ResultRow): Chunk = Chunk(
         id = row[ChunkTable.id],
         title = row[ChunkTable.title],
-        text = row[ChunkTable.text],
+        body = row[ChunkTable.body],
         updatedAt = row[ChunkTable.updatedAt],
         createdAt = row[ChunkTable.createdAt],
     )

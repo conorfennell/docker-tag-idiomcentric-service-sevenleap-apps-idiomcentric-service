@@ -8,7 +8,7 @@ import java.util.UUID
 object ChunkTable : Table("CHUNK") {
     val id = uuid("ID")
     val title = varchar("TITLE", length = 255)
-    var text = text("TEXT") // TODO what should collate be set to?
+    var body = text("BODY") // TODO what should collate be set to?
     val createdAt = timestamp("CREATED_AT")
     val updatedAt = timestamp("UPDATED_AT")
 
@@ -18,7 +18,7 @@ object ChunkTable : Table("CHUNK") {
 data class Chunk(
     val id: UUID,
     val title: String,
-    val text: String,
+    val body: String,
     val createdAt: Instant,
     val updatedAt: Instant,
 )

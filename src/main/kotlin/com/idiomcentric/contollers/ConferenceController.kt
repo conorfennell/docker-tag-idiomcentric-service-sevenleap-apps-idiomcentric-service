@@ -47,6 +47,7 @@ class ConferenceController(private val conferenceService: ConferenceService) {
     }
 
     @Post(processes = [MediaType.APPLICATION_JSON])
+    @Secured(SecurityRule.IS_ANONYMOUS)
     suspend fun create(@Body createConference: CreateConference): HttpResponse<Conference?> = when (val conference = conferenceService.create(createConference)) {
         null -> HttpResponse.badRequest()
         else -> HttpResponse.created(conference, URI.create("/conferences/${conference.id}"))
