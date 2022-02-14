@@ -112,3 +112,7 @@ tasks.test {
 tasks.jacocoTestReport {
     dependsOn(tasks.test) // tests are required to run before generating the report
 }
+
+nativeBuild {
+    buildArgs.add("--initialize-at-run-time=org.postgresql.sspi.SSPIClient")
+}

@@ -25,7 +25,7 @@ class PostgresConnection(databaseConfiguration: DatabaseConfiguration) {
             }
         }
 
-    fun hikari(databaseConfiguration: DatabaseConfiguration): HikariDataSource {
+    private fun hikari(databaseConfiguration: DatabaseConfiguration): HikariDataSource {
         val hikariConfig = HikariConfig()
 
         with(hikariConfig) {
