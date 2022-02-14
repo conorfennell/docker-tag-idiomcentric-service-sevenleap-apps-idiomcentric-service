@@ -35,7 +35,7 @@ class PostgresConnection(databaseConfiguration: DatabaseConfiguration) {
             password = databaseConfiguration.password
             maximumPoolSize = databaseConfiguration.maxPoolSize ?: 10
 
-            if(databaseConfiguration.enableMigration == true) {
+            if (databaseConfiguration.enableMigration == true) {
                 val flyway = Flyway
                     .configure()
                     .dataSource(
