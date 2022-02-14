@@ -49,6 +49,9 @@ endpoints:
   threaddump:
     enabled: true
     sensitive: false
+  flyway:
+    enabled: true
+    sensitive: false
 
 
 datasources:
@@ -61,14 +64,16 @@ datasources:
     maxPoolSize: 10
     username: username
     password: password
-    schema-generate: CREATE_DROP
     dialect: POSTGRES
+    enableMigration: true
 
 
 flyway:
+  enabled: true
   datasources:
     default:
-      enabled: false
+      enabled: true
+      locations: classpath:db/migration
 
 jackson:
   serialization:

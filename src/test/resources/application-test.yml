@@ -2,6 +2,7 @@ datasources:
   default:
     username: test
     password: test
+    enableMigration: false
 
 testcontainers:
   reuse:

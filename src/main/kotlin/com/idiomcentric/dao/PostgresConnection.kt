@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariDataSource
 import jakarta.inject.Singleton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -33,6 +34,19 @@ class PostgresConnection(databaseConfiguration: DatabaseConfiguration) {
             username = databaseConfiguration.username
             password = databaseConfiguration.password
             maximumPoolSize = databaseConfiguration.maxPoolSize ?: 10
+
+            if(databaseConfiguration.enableMigration == true) {
+                val flyway = Flyway
+                    .configure()
+                    .dataSource(
+                        databaseConfiguration.url,
+                        databaseConfiguration.username,
+                        databaseConfiguration.password
+                    )
+                    .locations("db/migration").load()
+
+                flyway.migrate()
+            }
 
             validate()
         }

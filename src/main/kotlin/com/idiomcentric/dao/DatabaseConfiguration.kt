@@ -28,4 +28,7 @@ class DatabaseConfiguration {
 
     @NotNull
     var maxPoolSize: Int? = null
+
+    @NotNull
+    var enableMigration: Boolean? = null
 }

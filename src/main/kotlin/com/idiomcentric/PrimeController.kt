@@ -14,7 +14,8 @@ import mu.withLoggingContext
 import java.math.BigInteger
 import java.security.SecureRandom
 
-val logger: KLogger = KotlinLogging.logger {}
+private val logger: KLogger = KotlinLogging.logger {}
+
 @Controller("/primes")
 @Secured(SecurityRule.IS_ANONYMOUS)
 class PrimeController {

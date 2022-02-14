@@ -1,9 +1,11 @@
 package com.idiomcentric.dao.chunk
 
+import com.idiomcentric.contollers.CreateChunk
 import com.idiomcentric.dao.PostgresConnection
 import jakarta.inject.Singleton
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.update
@@ -25,6 +27,16 @@ class ChunkDao(private val connection: PostgresConnection) {
         }
     }
 
+    suspend fun insert(createChunk: CreateChunk): Chunk? = connection.query {
+        ChunkTable.insert {
+            it[id] = UUID.randomUUID()
+            it[title] = createChunk.title
+            it[body] = createChunk.body
+            it[updatedAt] = Instant.now()
+            it[createdAt] = Instant.now()
+        }.resultedValues?.firstOrNull()?.let(::mapToChunk)
+    }
+
     suspend fun update(updateChunk: Chunk): Int = connection.query {
         ChunkTable.update({ ChunkTable.id eq updateChunk.id }) {
             it[title] = updateChunk.title
@@ -35,7 +47,6 @@ class ChunkDao(private val connection: PostgresConnection) {
     }
 
     suspend fun selectAll(): List<Chunk> = connection.query {
-
         ChunkTable.selectAll().map(::mapToChunk)
     }
 
