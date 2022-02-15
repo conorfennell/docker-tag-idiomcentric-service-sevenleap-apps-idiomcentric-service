@@ -115,4 +115,5 @@ tasks.jacocoTestReport {
 
 nativeBuild {
     buildArgs.add("--initialize-at-run-time=org.postgresql.sspi.SSPIClient")
+    buildArgs.add("--report-unsupported-elements-at-runtime")
 }
