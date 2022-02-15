@@ -48,7 +48,7 @@ dependencies {
     kapt("io.micronaut:micronaut-http-validation")
     kapt("io.micronaut.openapi:micronaut-openapi")
     kapt("io.micronaut.security:micronaut-security-annotations")
-    implementation("com.zaxxer:HikariCP:$hikaricpVersion")
+    implementation("io.micronaut.sql:micronaut-jdbc-hikari")
     implementation("io.micronaut.security:micronaut-security-jwt")
     implementation("ch.qos.logback.contrib:logback-json-classic:$logbackVersion")
     implementation("ch.qos.logback.contrib:logback-jackson:$logbackVersion")
