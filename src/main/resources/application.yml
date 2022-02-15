@@ -65,7 +65,7 @@ datasources:
     username: username
     password: password
     dialect: POSTGRES
-    enableMigration: true
+    enableMigration: false
 
 
 flyway:
