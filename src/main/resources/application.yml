@@ -61,11 +61,11 @@ datasources:
     database: postgres
     url: jdbc:postgresql://${datasources.default.hostname}:${datasources.default.port}/${datasources.default.database}
     driverClassName: org.postgresql.Driver
-    maxPoolSize: 10
+    maxPoolSize: 3
     username: username
     password: password
     dialect: POSTGRES
-    enableMigration: false
+    enableMigration: true
 
 
 flyway:
