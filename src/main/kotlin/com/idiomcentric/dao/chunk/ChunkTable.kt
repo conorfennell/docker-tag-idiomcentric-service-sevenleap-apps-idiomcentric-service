@@ -1,5 +1,6 @@
 package com.idiomcentric.dao.chunk
 
+import io.micronaut.core.annotation.Introspected
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.timestamp
 import java.time.Instant
@@ -15,6 +16,7 @@ object ChunkTable : Table("CHUNK") {
     override val primaryKey = PrimaryKey(id)
 }
 
+@Introspected
 data class Chunk(
     val id: UUID,
     val title: String,
