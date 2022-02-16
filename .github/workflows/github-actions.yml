@@ -23,3 +23,8 @@ jobs:
           ./gradlew dockerBuildNative
           docker tag idiomcentric-service:latest sevenleap/apps:idiomcentric-service
           docker push sevenleap/apps:idiomcentric-service
+      - name: build-push-front-end
+        run: |
+          cd ./chunk-encoder
+          docker build . --tag sevenleap/apps:chunk-encoder
+          docker push sevenleap/apps:chunk-encoder
