@@ -27,7 +27,7 @@ class DatabaseConfiguration {
     var url: String? = null
 
     @NotNull
-    var maxPoolSize: Int? = null
+    var maximumPoolSize: Int? = null
 
     @NotNull
     var enableMigration: Boolean? = null
