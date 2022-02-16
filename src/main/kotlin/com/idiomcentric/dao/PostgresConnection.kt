@@ -5,10 +5,15 @@ import com.zaxxer.hikari.HikariDataSource
 import jakarta.inject.Singleton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import mu.KLogger
+import mu.KotlinLogging
+import mu.withLoggingContext
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.transactions.transaction
+
+private val logger: KLogger = KotlinLogging.logger {}
 
 @Singleton
 class PostgresConnection(databaseConfiguration: DatabaseConfiguration) {
@@ -46,6 +51,9 @@ class PostgresConnection(databaseConfiguration: DatabaseConfiguration) {
                     .locations("db/migration").load()
 
                 flyway.migrate()
+            }
+            withLoggingContext("MAX_POOL_SIZE" to maximumPoolSize.toString()) {
+                logger.info { "Init database pool" }
             }
 
             validate()
