@@ -1,4 +1,3 @@
-val hikaricpVersion: String by project
 val junitJupiterEngine: String by project
 val jetbrainsExposedVersion: String by project
 val koTestVersion: String by project

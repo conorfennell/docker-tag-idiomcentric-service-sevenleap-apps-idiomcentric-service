@@ -35,3 +35,8 @@
 
 # code coverage
 [code coverage generated](./build/reports/jacoco/test/html/index.html)
+
+# micronaut
+```sh
+sdk update micronaut
+```
