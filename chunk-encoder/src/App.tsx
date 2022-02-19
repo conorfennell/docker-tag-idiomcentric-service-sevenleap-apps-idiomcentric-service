@@ -33,7 +33,7 @@ example list
   }
 
 
-  const [readOnly, setReadOnly] = useState(false);
+  const [readOnly, setReadOnly] = useState(true);
 
   const [chunk, setChunk] = useState(initialChunk());
   const [chunks, setChunks] = useState(initialChunks());
@@ -60,7 +60,7 @@ example list
     }).then(_ => setChunk(chunks[0]))
   }
 
-  const onStore = () => {
+  const onSave = () => {
     return fetch(`${URL}/api/chunks/${chunk.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -69,11 +69,12 @@ example list
   }
 
   return (
-    <div>
-      <h1>Chunks</h1>
-      <ul>{chunks.map(ch => <li onClick={() => { setChunk(ch) }} key={ch.id}>{ch.title}</li>)}</ul>
-      <hr />
-      <div>
+    <div className="wrapper">
+      <div className="chunks">
+        <h1>Chunks</h1>
+        <ul>{chunks.map(ch => <li onClick={() => { setChunk(ch) }} key={ch.id}>{ch.title}</li>)}</ul>
+      </div>
+      <div className="editor">
         <div className='title'><h1>{chunk.title}</h1></div>
         <Editor className='editor'
           defaultValue={chunk.body}
@@ -88,9 +89,9 @@ example list
         />
         <div className='control'>
           <button onClick={() => { onCreate().then(chunk => setChunk(chunk)).then() }}>New</button>
-          <button onClick={() => { onStore() }}>Store</button>
+          <button onClick={() => { onSave() }}>Save</button>
           <button onClick={() => { onDelete() }}>Delete</button>
-          <button onClick={() => { setReadOnly(!readOnly) }}>Edit</button>
+          <button onClick={() => { setReadOnly(!readOnly) }}>{ readOnly?'Edit':'Read' }</button>
         </div>
       </div>
     </div>
