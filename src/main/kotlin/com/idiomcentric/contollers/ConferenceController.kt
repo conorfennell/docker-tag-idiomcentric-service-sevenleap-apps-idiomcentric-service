@@ -3,9 +3,9 @@ package com.idiomcentric.contollers
 import com.idiomcentric.Conference
 import com.idiomcentric.ConferenceService
 import com.idiomcentric.CreateConference
-import com.idiomcentric.Deletion
 import com.idiomcentric.PatchConference
-import com.idiomcentric.Retrieval
+import com.idiomcentric.service.Deletion
+import com.idiomcentric.service.Retrieval
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
@@ -35,9 +35,9 @@ class ConferenceController(private val conferenceService: ConferenceService) {
     suspend fun all(@QueryValue limit: Int?): List<Conference> = conferenceService.filter(ConferenceQuery(limit))
 
     @Get("/{id}", headRoute = false)
-    suspend fun byId(id: UUID): HttpResponse<Conference?> = when (val retrieval = conferenceService.byId(id)) {
+    suspend fun byId(id: UUID): HttpResponse<Conference?> = when (val retrieved = conferenceService.byId(id)) {
         is Retrieval.NotFound -> HttpResponse.notFound()
-        is Retrieval.Retrieved -> HttpResponse.ok(retrieval.conference)
+        is Retrieval.Retrieved -> HttpResponse.ok(retrieved.value)
     }
 
     @Delete("/{id}")

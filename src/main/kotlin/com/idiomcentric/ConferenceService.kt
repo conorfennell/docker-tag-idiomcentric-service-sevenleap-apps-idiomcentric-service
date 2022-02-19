@@ -2,6 +2,8 @@ package com.idiomcentric
 
 import com.idiomcentric.contollers.ConferenceQuery
 import com.idiomcentric.dao.conference.ConferenceDao
+import com.idiomcentric.service.Deletion
+import com.idiomcentric.service.Retrieval
 import jakarta.inject.Singleton
 import java.util.UUID
 
@@ -12,7 +14,7 @@ class ConferenceService(private val conferenceDao: ConferenceDao) {
 
     suspend fun filter(query: ConferenceQuery): List<Conference> = conferenceDao.filter(query)
 
-    suspend fun byId(id: UUID): Retrieval = when (val conference = conferenceDao.selectById(id)) {
+    suspend fun byId(id: UUID): Retrieval<Conference> = when (val conference = conferenceDao.selectById(id)) {
         null -> Retrieval.NotFound
         else -> Retrieval.Retrieved(conference)
     }
@@ -27,14 +29,4 @@ class ConferenceService(private val conferenceDao: ConferenceDao) {
     suspend fun updateById(updateConference: Conference): Int = conferenceDao.update(updateConference)
 
     suspend fun partialUpdateById(updateConference: PatchConference): Int = conferenceDao.partialUpdate(updateConference)
-}
-
-sealed interface Deletion {
-    object Deleted : Deletion
-    object NotFound : Deletion
-}
-
-sealed interface Retrieval {
-    data class Retrieved(val conference: Conference) : Retrieval
-    object NotFound : Retrieval
 }
