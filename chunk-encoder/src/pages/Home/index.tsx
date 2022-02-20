@@ -68,7 +68,7 @@ function App() {
         size="full">
         <DrawerContent>
           <Sidebar onClose={onClose}>
-            <ul>{chunks.map(ch => <li onClick={() => { setChunk(ch); setInitEditorValue(ch) }} key={ch.id}>{ch.title}</li>)}</ul>
+            <ChunkList chunks={chunks} selected={chunk.id} onClick={ch => { setChunk(ch); setInitEditorValue(ch) }} />
           </Sidebar>
         </DrawerContent>
       </Drawer>
