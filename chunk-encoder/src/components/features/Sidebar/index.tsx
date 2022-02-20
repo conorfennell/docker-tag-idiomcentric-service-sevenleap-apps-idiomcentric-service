@@ -1,10 +1,11 @@
 import { Box, Flex, Text, CloseButton, useColorModeValue } from '@chakra-ui/react'
 
 interface SidebarProps {
-    onClose: () => void
+    onClose: () => void;
+    display?: any;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ children, onClose }) => {
+const Sidebar: React.FC<SidebarProps> = ({ children, onClose, ...rest }) => {
     return (
         <Box
             bg={useColorModeValue('white', 'gray.900')}
@@ -13,6 +14,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children, onClose }) => {
             w={{ base: 'full', md: 80 }}
             pos="fixed"
             h="full"
+            {...rest}
         >
             <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
                 <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">

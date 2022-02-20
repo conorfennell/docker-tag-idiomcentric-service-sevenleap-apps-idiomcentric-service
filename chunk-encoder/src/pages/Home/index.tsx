@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Heading, useColorModeValue } from '@chakra-ui/react'
+import { Box, Heading, useColorModeValue, Drawer, DrawerContent, useDisclosure } from '@chakra-ui/react'
 import Editor from '../../components/elements/Editor'
 import Sidebar from '../../components/features/Sidebar'
 import { onCreate, onDelete, onSave, getChunks } from '../../api'
@@ -38,11 +38,12 @@ function initialChunks(): Chunk[] {
 }
 
 function App() {
-  const [readOnly, setReadOnly] = useState(true);
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [readOnly, setReadOnly] = useState(true)
 
-  const [chunk, setChunk] = useState<Chunk>(initialChunk());
-  const [initEditorValue, setInitEditorValue] = useState<Chunk>(initialChunk());
-  const [chunks, setChunks] = useState(initialChunks());
+  const [chunk, setChunk] = useState<Chunk>(initialChunk())
+  const [initEditorValue, setInitEditorValue] = useState<Chunk>(initialChunk())
+  const [chunks, setChunks] = useState(initialChunks())
 
   useEffect(() => {
     window.localStorage.setItem(EDITOR_CHUNK, JSON.stringify(chunk))
@@ -51,9 +52,21 @@ function App() {
 
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
-      <Sidebar onClose={console.log}>
+      <Sidebar onClose={() => onClose()} display={{ base: 'none', md: 'block' }}>
         <ul>{chunks.map(ch => <li onClick={() => { setChunk(ch); setInitEditorValue(ch) }} key={ch.id}>{ch.title}</li>)}</ul>
       </Sidebar>
+      <Drawer
+        autoFocus={false}
+        isOpen={isOpen}
+        placement="left"
+        onClose={onClose}
+        returnFocusOnClose={false}
+        onOverlayClick={onClose}
+        size="full">
+        <DrawerContent>
+          <Sidebar onClose={onClose} />
+        </DrawerContent>
+      </Drawer>
 
       <Box ml={{ base: 0, md: 80 }} p="4">
         <Heading>{chunk.title}</Heading>
@@ -71,7 +84,7 @@ function App() {
         />
 
         <div className='control'>
-          <button onClick={() => { onCreate().then(chunk => setChunk(chunk)).then() }}>New</button>
+          <button onClick={() => { onCreate().then(chunk => { setChunk(chunk); setInitEditorValue(chunk); }) }}>New</button>
           <button onClick={() => { onSave(chunk) }}>Save</button>
           <button onClick={() => { onDelete(chunk.id).then(_ => setChunk(chunks[0])) }}>Delete</button>
           <button onClick={() => { setReadOnly(!readOnly) }}>{ readOnly?'Edit':'Read' }</button>
