@@ -36,6 +36,7 @@ class ChunkEncoderClozedDao(private val connection: PostgresConnection) {
     suspend fun insert(create: CreateChunkEncoderClozed): ChunkEncoderClozed? = connection.query {
         ChunkEncoderClozedTable.insert {
             it[id] = UUID.randomUUID()
+            it[chunkId] = create.chunkId
             it[sentence] = create.sentence
             it[clozedPositions] = create.clozedPositions.joinToString(",")
             it[updatedAt] = Instant.now()
@@ -45,6 +46,7 @@ class ChunkEncoderClozedDao(private val connection: PostgresConnection) {
 
     suspend fun update(update: ChunkEncoderClozed): Int = connection.query {
         ChunkEncoderClozedTable.update({ ChunkEncoderClozedTable.id eq update.id }) {
+            it[chunkId] = update.chunkId
             it[sentence] = update.sentence
             it[clozedPositions] = update.clozedPositions.joinToString(",")
             it[updatedAt] = Instant.now()
