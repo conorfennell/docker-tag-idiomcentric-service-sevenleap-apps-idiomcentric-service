@@ -1,16 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './index.css';
-import Editor from "../../components/elements/Editor";
-
-const URL = 'https://server.idiomcentric.com'
-
-interface Chunk {
-  id: string;
-  title: string;
-  body: string;
-  createdAt: Date;
-  updatedAt: Date
-}
+import Editor from '../../components/elements/Editor'
+import { onCreate, onDelete, onSave, getChunks } from '../../api'
+import { Chunk } from '../../types'
 
 function App() {
   const EDITOR_CHUNK = 'editor-chunk'
@@ -39,34 +31,7 @@ example list
   const [chunks, setChunks] = useState(initialChunks());
 
   useEffect(() => { window.localStorage.setItem(EDITOR_CHUNK, JSON.stringify(chunk)) }, [chunk])
-  useEffect(() => {
-    fetch(`${URL}/api/chunks`)
-      .then(response => response.json())
-      .then(returnedChunks => setChunks(returnedChunks));
-  }, [chunk]);
-
-  const onCreate = () => {
-    return fetch(`${URL}/api/chunks`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: 'new: ' + JSON.stringify(new Date()), body: '#new' })
-    }).then(response => response.json())
-  }
-
-  const onDelete = () => {
-    return fetch(`${URL}/api/chunks/${chunk.id}`, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-    }).then(_ => setChunk(chunks[0]))
-  }
-
-  const onSave = () => {
-    return fetch(`${URL}/api/chunks/${chunk.id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(chunk)
-    })
-  }
+  useEffect(() => { getChunks().then(returnedChunks => setChunks(returnedChunks)) }, [chunk]);
 
   return (
     <div className="wrapper">
@@ -89,8 +54,8 @@ example list
         />
         <div className='control'>
           <button onClick={() => { onCreate().then(chunk => setChunk(chunk)).then() }}>New</button>
-          <button onClick={() => { onSave() }}>Save</button>
-          <button onClick={() => { onDelete() }}>Delete</button>
+          <button onClick={() => { onSave(chunk) }}>Save</button>
+          <button onClick={() => { onDelete(chunk.id).then(_ => setChunk(chunks[0])) }}>Delete</button>
           <button onClick={() => { setReadOnly(!readOnly) }}>{ readOnly?'Edit':'Read' }</button>
         </div>
       </div>
