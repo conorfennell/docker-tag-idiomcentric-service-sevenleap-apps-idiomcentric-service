@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import './App.css';
-import Editor from "rich-markdown-editor";
+import './index.css';
+import Editor from "../../components/elements/Editor";
 
 const URL = 'https://server.idiomcentric.com'
 
@@ -35,7 +35,7 @@ example list
 
   const [readOnly, setReadOnly] = useState(true);
 
-  const [chunk, setChunk] = useState(initialChunk());
+  const [chunk, setChunk] = useState<Chunk>(initialChunk());
   const [chunks, setChunks] = useState(initialChunks());
 
   useEffect(() => { window.localStorage.setItem(EDITOR_CHUNK, JSON.stringify(chunk)) }, [chunk])
@@ -76,15 +76,15 @@ example list
       </div>
       <div className="editor">
         <div className='title'><h1>{chunk.title}</h1></div>
-        <Editor className='editor'
+        <Editor
           defaultValue={chunk.body}
-          value={chunk.body}
+          currentValue={chunk.body}
           readOnly={readOnly}
-          readOnlyWriteCheckboxes={true}
-
-          onChange={(currentChunkBody) => {
-            chunk.body = currentChunkBody()
-            setChunk(chunk)
+          onChange={(currentChunkBody: () => any) => {
+            setChunk({
+              ...chunk, 
+              body: currentChunkBody()
+            })
           }}
         />
         <div className='control'>

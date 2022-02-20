@@ -1,6 +1,6 @@
 .title {
     padding: 20px;
-    alignment: center;
+    text-align: center;
 }
 
 .control {
@@ -8,8 +8,4 @@
     justify-content: center;
     align-items: center;
     height: 200px;
-}
-
-.editor {
-    padding: 40px;
 }

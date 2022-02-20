@@ -7,12 +7,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-
-
 .wrapper {
   display: grid;
 }
-
 
 .chunks {
   grid-column: 1;
