@@ -3,6 +3,7 @@ import { Box, Heading, useColorModeValue, Drawer, DrawerContent, Button, Divider
 import Editor from '../../components/elements/Editor'
 import Sidebar from '../../components/features/Sidebar'
 import MobileNav from '../../components/features/MobileNav'
+import ChunkList from '../../components/elements/ChunkList'
 import { onCreate, onDelete, onSave, getChunks } from '../../api'
 import { Chunk } from '../../types'
 
@@ -55,7 +56,7 @@ function App() {
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
       {/* NAVIGATION */}
       <Sidebar onClose={() => onClose()} display={{ base: 'none', md: 'block' }}>
-        <ul>{chunks.map(ch => <li onClick={() => { setChunk(ch); setInitEditorValue(ch) }} key={ch.id}>{ch.title}</li>)}</ul>
+        <ChunkList chunks={chunks} selected={chunk.id} onClick={ch => { setChunk(ch); setInitEditorValue(ch) }} />
       </Sidebar>
       <Drawer
         autoFocus={false}
