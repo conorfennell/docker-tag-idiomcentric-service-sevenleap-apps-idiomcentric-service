@@ -2,7 +2,16 @@
     "name": "chunk-encoder",
     "version": "0.1.0",
     "private": true,
+    "scripts": {
+        "start": "GENERATE_SOURCEMAP=false react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject"
+    },
     "dependencies": {
+        "@chakra-ui/react": "^1.8.5",
+        "@emotion/react": "^11.8.1",
+        "@emotion/styled": "^11.8.1",
         "@testing-library/jest-dom": "^5.16.2",
         "@testing-library/react": "^12.1.2",
         "@testing-library/user-event": "^13.5.0",
@@ -10,8 +19,11 @@
         "@types/node": "^16.11.24",
         "@types/react": "^17.0.39",
         "@types/react-dom": "^17.0.11",
+        "framer-motion": "^6.2.6",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
+        "react-icons": "^4.3.1",
+        "react-router-dom": "^6.2.1",
         "react-scripts": "5.0.0",
         "rich-markdown-editor": "^11.21.3",
         "typescript": "^4.5.5",
@@ -19,12 +31,6 @@
     },
     "overrides": {
         "prosemirror-tables": "^1.1.1"
-    },
-    "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "test": "react-scripts test",
-        "eject": "react-scripts eject"
     },
     "eslintConfig": {
         "extends": [
