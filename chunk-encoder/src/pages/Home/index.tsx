@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Heading, useColorModeValue, Drawer, DrawerContent, useDisclosure } from '@chakra-ui/react'
+import { Box, Heading, useColorModeValue, Drawer, DrawerContent, Button, Divider, useDisclosure } from '@chakra-ui/react'
 import Editor from '../../components/elements/Editor'
 import Sidebar from '../../components/features/Sidebar'
 import { onCreate, onDelete, onSave, getChunks } from '../../api'
@@ -83,11 +83,12 @@ function App() {
           }}
         />
 
+        <Divider />
         <div className='control'>
-          <button onClick={() => { onCreate().then(chunk => { setChunk(chunk); setInitEditorValue(chunk); }) }}>New</button>
-          <button onClick={() => { onSave(chunk) }}>Save</button>
-          <button onClick={() => { onDelete(chunk.id).then(_ => setChunk(chunks[0])) }}>Delete</button>
-          <button onClick={() => { setReadOnly(!readOnly) }}>{ readOnly?'Edit':'Read' }</button>
+          <Button colorScheme='blue' onClick={() => { onCreate().then(chunk => { setChunk(chunk); setInitEditorValue(chunk); }) }}>New</Button>
+          <Button colorScheme='green' onClick={() => { onSave(chunk) }}>Save</Button>
+          <Button colorScheme='red' onClick={() => { onDelete(chunk.id).then(_ => {setChunk(chunks[0]); setInitEditorValue(chunks[0]) }) }}>Delete</Button>
+          <Button colorScheme='yellow' onClick={() => { setReadOnly(!readOnly) }}>{ readOnly?'Edit':'Read' }</Button>
         </div>
       </Box>
     </Box>
