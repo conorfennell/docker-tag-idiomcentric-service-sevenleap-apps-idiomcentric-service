@@ -1,28 +1,28 @@
 // @ts-ignore
 import Editor from 'rich-markdown-editor'
-import { Box } from '@chakra-ui/react'
+import { Box, chakra } from '@chakra-ui/react'
 import './index.css'
 
+const CEditor = chakra(Editor)
+
 interface MDEditorProps {
-    defaultValue: string;
-    currentValue: string;
+    initValue: string;
     readOnly: boolean;
     onChange: (val: () => void) => void;
 }
 
 const MDEditor: React.FC<MDEditorProps> = ({
-    defaultValue,
-    currentValue,
+    initValue,
     readOnly,
     onChange
 }) => {
     return (
-        <Box>
-            <Editor
+        <Box pos={'relative'} bg={'white'}>
+            { /* @ts-ignore */ }
+            <CEditor
                 className='editor'
                 data-testid='editor'
-                defaultValue={defaultValue}
-                value={currentValue}
+                value={initValue}
                 readOnly={readOnly}
                 readOnlyWriteCheckboxes={true}
                 onChange={onChange}
