@@ -1,7 +1,7 @@
 package com.idiomcentric.contollers
 
-import com.idiomcentric.dao.chunk.Chunk
-import com.idiomcentric.service.ChunkService
+import com.idiomcentric.dao.chunk.ChunkEncoderClozed
+import com.idiomcentric.service.ChunkEncoderClozedService
 import com.idiomcentric.service.Creation
 import com.idiomcentric.service.Deletion
 import com.idiomcentric.service.Retrieval
@@ -26,38 +26,36 @@ private val logger: KLogger = KotlinLogging.logger {}
 
 @Controller("/api/chunks")
 @Secured(SecurityRule.IS_ANONYMOUS)
-class ChunkController(private val chunkService: ChunkService) {
+class ChunkEncoderClozedController(private val chunkEncoderClozedService: ChunkEncoderClozedService) {
 
-    @Get(processes = [MediaType.APPLICATION_JSON])
-    suspend fun all(): List<Chunk> {
-        return chunkService.all()
-    }
+    @Get("/{chunkId}/chunkencoderclozed", headRoute = false)
+    suspend fun byChunkId(chunkId: UUID): List<ChunkEncoderClozed> = chunkEncoderClozedService.byChunkId(chunkId)
 
-    @Get("/{id}", headRoute = false)
-    suspend fun byId(id: UUID): HttpResponse<Chunk?> = when (val retrieved = chunkService.byId(id)) {
+    @Get("/{chunkId}/chunkencoderclozed/{id}", headRoute = false)
+    suspend fun byChunkId(chunkId: UUID, id: UUID): HttpResponse<ChunkEncoderClozed?> = when (val retrieved = chunkEncoderClozedService.byId(id)) {
         is Retrieval.NotFound -> HttpResponse.notFound()
         is Retrieval.Retrieved -> HttpResponse.ok(retrieved.value)
     }
 
     @Post(processes = [MediaType.APPLICATION_JSON])
     @Secured(SecurityRule.IS_ANONYMOUS)
-    suspend fun create(@Body createChunk: CreateChunk): HttpResponse<Chunk> {
+    suspend fun create(@Body createChunk: CreateChunkEncoderClozed): HttpResponse<ChunkEncoderClozed> {
         withLoggingContext("ACTION" to "POST") {
             logger.info(createChunk.toString())
         }
-        return when (val creation = chunkService.create(createChunk)) {
+        return when (val creation = chunkEncoderClozedService.create(createChunk)) {
             is Creation.Error -> HttpResponse.serverError()
             is Creation.Retrieved -> HttpResponse.ok(creation.value)
         }
     }
 
     @Put("/{id}", processes = [MediaType.APPLICATION_JSON])
-    suspend fun put(id: UUID, @Body updateChunk: Chunk): HttpResponse<Nothing> {
-        withLoggingContext("ACTION" to "PUT", "CHUNK_ID" to id.toString()) {
-            logger.info(updateChunk.toString())
+    suspend fun put(id: UUID, @Body updateChunkEncoder: ChunkEncoderClozed): HttpResponse<Nothing> {
+        withLoggingContext("ACTION" to "PUT", "CHUNK_ENCODER_ID" to id.toString()) {
+            logger.info(updateChunkEncoder.toString())
         }
 
-        return when (chunkService.updateById(updateChunk)) {
+        return when (chunkEncoderClozedService.updateById(updateChunkEncoder)) {
             is Update.NotFound -> HttpResponse.notFound()
             is Update.Updated -> HttpResponse.ok()
         }
@@ -69,7 +67,7 @@ class ChunkController(private val chunkService: ChunkService) {
             logger.info(id.toString())
         }
 
-        return when (chunkService.deleteById(id)) {
+        return when (chunkEncoderClozedService.deleteById(id)) {
             is Deletion.Deleted -> HttpResponse.ok()
             is Deletion.NotFound -> HttpResponse.notFound()
         }
@@ -77,7 +75,8 @@ class ChunkController(private val chunkService: ChunkService) {
 }
 
 @Introspected
-data class CreateChunk(
-    val title: String,
-    val body: String
+data class CreateChunkEncoderClozed(
+    val chunkId: UUID,
+    val sentence: String,
+    val clozedPositions: List<Int>,
 )
