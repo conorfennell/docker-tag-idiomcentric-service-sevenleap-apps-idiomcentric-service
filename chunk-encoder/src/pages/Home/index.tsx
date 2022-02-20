@@ -63,7 +63,8 @@ function App() {
           readOnly={readOnly}
           onChange={(currentChunkBody: () => any) => {
             setChunk({
-              ...chunk, 
+              ...chunk,
+              title: currentChunkBody().split('\n')[0].replace(/^#*\s/, ''),
               body: currentChunkBody()
             })
           }}
