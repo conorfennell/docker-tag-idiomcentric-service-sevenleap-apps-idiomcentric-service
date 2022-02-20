@@ -1,5 +1,6 @@
 // @ts-ignore
-import Editor from "rich-markdown-editor";
+import Editor from 'rich-markdown-editor'
+import { Box } from '@chakra-ui/react'
 import './index.css'
 
 interface MDEditorProps {
@@ -16,15 +17,17 @@ const MDEditor: React.FC<MDEditorProps> = ({
     onChange
 }) => {
     return (
-        <Editor
-            className='editor'
-            data-testid='editor'
-            defaultValue={defaultValue}
-            value={currentValue}
-            readOnly={readOnly}
-            readOnlyWriteCheckboxes={true}
-            onChange={onChange}
-        />
+        <Box>
+            <Editor
+                className='editor'
+                data-testid='editor'
+                defaultValue={defaultValue}
+                value={currentValue}
+                readOnly={readOnly}
+                readOnlyWriteCheckboxes={true}
+                onChange={onChange}
+            />
+        </Box>
     )
 }
 
