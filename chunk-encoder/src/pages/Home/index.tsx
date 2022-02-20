@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Box, Heading, useColorModeValue, Drawer, DrawerContent, Button, Divider, useDisclosure } from '@chakra-ui/react'
 import Editor from '../../components/elements/Editor'
 import Sidebar from '../../components/features/Sidebar'
+import MobileNav from '../../components/features/MobileNav'
 import { onCreate, onDelete, onSave, getChunks } from '../../api'
 import { Chunk } from '../../types'
 
@@ -52,6 +53,7 @@ function App() {
 
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
+      {/* NAVIGATION */}
       <Sidebar onClose={() => onClose()} display={{ base: 'none', md: 'block' }}>
         <ul>{chunks.map(ch => <li onClick={() => { setChunk(ch); setInitEditorValue(ch) }} key={ch.id}>{ch.title}</li>)}</ul>
       </Sidebar>
@@ -64,10 +66,14 @@ function App() {
         onOverlayClick={onClose}
         size="full">
         <DrawerContent>
-          <Sidebar onClose={onClose} />
+          <Sidebar onClose={onClose}>
+            <ul>{chunks.map(ch => <li onClick={() => { setChunk(ch); setInitEditorValue(ch) }} key={ch.id}>{ch.title}</li>)}</ul>
+          </Sidebar>
         </DrawerContent>
       </Drawer>
+      <MobileNav display={{ base: 'flex', md: 'none' }} onOpen={onOpen} />
 
+      {/* MAIN WINDOW */}
       <Box ml={{ base: 0, md: 80 }} p="4">
         <Heading>{chunk.title}</Heading>
 
