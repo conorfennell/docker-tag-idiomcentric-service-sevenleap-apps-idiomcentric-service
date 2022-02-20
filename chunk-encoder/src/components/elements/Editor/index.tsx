@@ -1,3 +1,4 @@
+// @ts-ignore
 import Editor from "rich-markdown-editor";
 import './index.css'
 
