@@ -1,5 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Heading, useColorModeValue, Drawer, DrawerContent, Button, Divider, useDisclosure } from '@chakra-ui/react'
+import { 
+  Box, 
+  Heading, 
+  useColorModeValue, 
+  Drawer, 
+  DrawerContent, 
+  Button, 
+  Divider, 
+  useDisclosure, 
+  Popover, 
+  PopoverContent, 
+  Portal,
+  PopoverHeader,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverFooter,
+  ButtonGroup
+} from '@chakra-ui/react'
 import Editor from '../../components/elements/Editor'
 import Sidebar from '../../components/features/Sidebar'
 import MobileNav from '../../components/features/MobileNav'
@@ -41,6 +58,8 @@ function initialChunks(): Chunk[] {
 
 function App() {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [isPopoverOpen, setIsPopoverOpen] = React.useState(false)
+  const [popoverLoc, setPopoverLoc] = useState({ left: 0, top: 0 })
   const [readOnly, setReadOnly] = useState(true)
 
   const [chunk, setChunk] = useState<Chunk>(initialChunk())
@@ -80,6 +99,13 @@ function App() {
 
         <Editor
           initValue={initEditorValue.body}
+          onMouseUp={(text, loc) => {
+            // HERE WE HAVE ACCESS TO HIGHLIGHTED TEXT
+            if (readOnly && text) { // We should only do this if in Read Only Mode
+              setPopoverLoc({ top: loc?.bottom || 0, left: loc?.left || 0 })
+              setIsPopoverOpen(true)
+            }
+          }}
           readOnly={readOnly}
           onChange={(currentChunkBody: () => any) => {
             const title = currentChunkBody().split('\n')[0].replace(/^#*\s/, '')
@@ -92,6 +118,33 @@ function App() {
             })
           }}
         />
+
+        <Popover 
+          isOpen={isPopoverOpen} 
+          onClose={() => setIsPopoverOpen(false)} 
+          strategy={'absolute'}
+        >
+          <Portal>
+          <PopoverContent color='white' bg='blue.800' borderColor='blue.800' sx={{left: popoverLoc.left, top: popoverLoc.top  }}>
+            <PopoverHeader pt={4} fontWeight='bold' border='0'>
+              Create a Flash Card
+            </PopoverHeader>
+            <PopoverArrow />
+            <PopoverCloseButton />
+            <PopoverFooter
+              border='0'
+              d='flex'
+              alignItems='center'
+              justifyContent='space-between'
+              pb={4}
+            >
+              <ButtonGroup size='sm'>
+                <Button colorScheme='green'>Clozed Card</Button>
+              </ButtonGroup>
+            </PopoverFooter>
+          </PopoverContent>
+          </Portal>
+        </Popover>
 
         <Divider />
         <div className='control'>

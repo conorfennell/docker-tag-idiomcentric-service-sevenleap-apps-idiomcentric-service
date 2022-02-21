@@ -9,12 +9,14 @@ interface MDEditorProps {
     initValue: string;
     readOnly: boolean;
     onChange: (val: () => void) => void;
+    onMouseUp: (text: string | null, loc: DOMRect | null) => any;
 }
 
 const MDEditor: React.FC<MDEditorProps> = ({
     initValue,
     readOnly,
-    onChange
+    onChange,
+    onMouseUp
 }) => {
     return (
         <Box pos={'relative'} bg={'white'}>
@@ -22,6 +24,13 @@ const MDEditor: React.FC<MDEditorProps> = ({
             <CEditor
                 className='editor'
                 data-testid='editor'
+                handleDOMEvents={{
+                    mouseup: _ => {
+                        const text = window.getSelection()?.toString() || null
+                        const loc = window.getSelection()?.getRangeAt(0).getBoundingClientRect() || null
+                        return onMouseUp(text, loc)
+                    }
+                }}
                 value={initValue}
                 readOnly={readOnly}
                 readOnlyWriteCheckboxes={true}
