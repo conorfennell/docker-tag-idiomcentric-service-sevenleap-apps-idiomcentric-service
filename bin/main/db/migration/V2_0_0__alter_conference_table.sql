@@ -1,0 +1,2 @@
+ALTER TABLE conference
+ADD COLUMN start_at TIMESTAMP NOT NULL;

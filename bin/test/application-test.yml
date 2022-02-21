@@ -1,0 +1,14 @@
+datasources:
+  default:
+    username: test
+    password: test
+    enableMigration: false
+
+testcontainers:
+  reuse:
+    enable: false
+
+flyway:
+  datasources:
+    default:
+      enabled: true

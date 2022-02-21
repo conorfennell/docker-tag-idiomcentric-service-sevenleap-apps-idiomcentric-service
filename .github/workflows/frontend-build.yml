@@ -1,0 +1,25 @@
+name: build-push
+on:
+  push:
+    branches: [master]
+    paths:
+      - chunk-encoder/**
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: setup-build
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: build-push-front-end
+        run: |
+          cd ./chunk-encoder
+          docker build . --tag sevenleap/apps:chunk-encoder
+          docker push sevenleap/apps:chunk-encoder
