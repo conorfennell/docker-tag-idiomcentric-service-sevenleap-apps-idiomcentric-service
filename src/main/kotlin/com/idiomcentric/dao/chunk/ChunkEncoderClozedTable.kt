@@ -6,7 +6,7 @@ import org.jetbrains.exposed.sql.javatime.timestamp
 import java.time.Instant
 import java.util.UUID
 
-object ChunkEncoderClozedTable : Table("CHUNK_ENCODER_CLOZED") {
+object ChunkEncoderClozedTable : Table("CHUNK_FLASHCARD_CLOZED") {
     val id = uuid("ID")
     val chunkId = reference("CHUNK_ID", ChunkTable.id)
     val sentence = text("SENTENCE")
