@@ -82,9 +82,12 @@ function App() {
           initValue={initEditorValue.body}
           readOnly={readOnly}
           onChange={(currentChunkBody: () => any) => {
+            const title = currentChunkBody().split('\n')[0].replace(/^#*\s/, '')
+            const isValidTitle = title.length && !!title.replace(/\s/g, '').length
+
             setChunk({
               ...chunk,
-              title: currentChunkBody().split('\n')[0].replace(/^#*\s/, ''),
+              title: isValidTitle ? title : chunk.id,
               body: currentChunkBody()
             })
           }}
