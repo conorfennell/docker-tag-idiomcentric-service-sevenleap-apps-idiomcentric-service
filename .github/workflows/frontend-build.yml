@@ -1,4 +1,4 @@
-name: build-push
+name: frontend-build
 on:
   push:
     branches: [master]
