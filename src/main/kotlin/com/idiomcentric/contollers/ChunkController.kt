@@ -102,7 +102,7 @@ class ChunkController(private val chunkService: ChunkService, private val clozed
     @Put("/{chunkId}/flashcards/clozed/{id}", processes = [MediaType.APPLICATION_JSON])
     suspend fun put(chunkId: UUID, id: UUID, @Body updateChunkEncoder: ClozedFlashcard): HttpResponse<Nothing> {
         withLoggingContext(
-            "ACTION" to "DELETE",
+            "ACTION" to "UPDATE",
             "CHUNK_ID" to chunkId.toString(),
             "CLOZED" to id.toString()
         ) { logger.info("Putting clozed") }
