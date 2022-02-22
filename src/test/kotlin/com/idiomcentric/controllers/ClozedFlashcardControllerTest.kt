@@ -2,9 +2,9 @@ package com.idiomcentric.controllers
 
 import com.idiomcentric.IntegrationProvider
 import com.idiomcentric.contollers.CreateChunk
-import com.idiomcentric.contollers.CreateChunkEncoderClozed
+import com.idiomcentric.contollers.CreateClozedFlashcard
 import com.idiomcentric.dao.chunk.Chunk
-import com.idiomcentric.dao.chunk.ChunkEncoderClozed
+import com.idiomcentric.dao.chunk.ClozedFlashcard
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.arbitrary
 import io.kotest.property.arbitrary.int
@@ -25,7 +25,7 @@ import java.util.UUID
 
 @MicronautTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class ChunkEncoderClozedControllerTest : IntegrationProvider() {
+class ClozedFlashcardControllerTest : IntegrationProvider() {
 
     @Inject
     @field:Client("/api/chunks")
@@ -34,11 +34,11 @@ class ChunkEncoderClozedControllerTest : IntegrationProvider() {
     @Test
     fun shouldReturnNoChunkEncoderClozedSuccessfully() {
         val chunkId = UUID.randomUUID()
-        val actual: List<ChunkEncoderClozed> = chunkEncoderClozedClient
+        val actual: List<ClozedFlashcard> = chunkEncoderClozedClient
             .toBlocking()
-            .retrieve(HttpRequest.GET<List<ChunkEncoderClozed>>("/$chunkId/chunkencoderclozed"), Argument.listOf(ChunkEncoderClozed::class.java))
+            .retrieve(HttpRequest.GET<List<ClozedFlashcard>>("/$chunkId/flashcards/clozed"), Argument.listOf(ClozedFlashcard::class.java))
 
-        Assertions.assertEquals(0, actual.size, "should return 0 chunkencoderclozed")
+        Assertions.assertEquals(0, actual.size, "should return 0 flashcards")
     }
 
     @Test
@@ -49,15 +49,15 @@ class ChunkEncoderClozedControllerTest : IntegrationProvider() {
             .toBlocking()
             .retrieve(HttpRequest.POST("", createChunk), Chunk::class.java)
 
-        val createChunkEncoderClozed = ArbCreateChunkEncoderClozed.next().copy(chunkId = chunk.id)
+        val createChunkEncoderClozed = ArbCreateClozedFlashcard.next().copy(chunkId = chunk.id)
 
-        val chunkEncoderClozed = chunkEncoderClozedClient
+        val clozedFlashcard = chunkEncoderClozedClient
             .toBlocking()
-            .retrieve(HttpRequest.POST("/${chunk.id}/chunkencoderclozed", createChunkEncoderClozed), ChunkEncoderClozed::class.java)
+            .retrieve(HttpRequest.POST("/${chunk.id}/flashcards/clozed", createChunkEncoderClozed), ClozedFlashcard::class.java)
 
-        Assertions.assertEquals(chunk.id, chunkEncoderClozed.chunkId, "chunk ids are the same")
-        Assertions.assertEquals(createChunkEncoderClozed.sentence, chunkEncoderClozed.sentence, "sentence is the same")
-        Assertions.assertEquals(createChunkEncoderClozed.clozedPositions, chunkEncoderClozed.clozedPositions, "clozedPositions are the same")
+        Assertions.assertEquals(chunk.id, clozedFlashcard.chunkId, "chunk ids are the same")
+        Assertions.assertEquals(createChunkEncoderClozed.sentence, clozedFlashcard.sentence, "sentence is the same")
+        Assertions.assertEquals(createChunkEncoderClozed.clozedPositions, clozedFlashcard.clozedPositions, "clozedPositions are the same")
     }
 
     @Test
@@ -68,38 +68,38 @@ class ChunkEncoderClozedControllerTest : IntegrationProvider() {
             .toBlocking()
             .retrieve(HttpRequest.POST("", createChunk), Chunk::class.java)
 
-        val createChunkEncoderClozed = ArbCreateChunkEncoderClozed.next().copy(chunkId = chunk.id)
+        val createChunkEncoderClozed = ArbCreateClozedFlashcard.next().copy(chunkId = chunk.id)
 
-        val chunkEncoderClozed = chunkEncoderClozedClient
+        val clozedFlashcard = chunkEncoderClozedClient
             .toBlocking()
-            .retrieve(HttpRequest.POST("/${chunk.id}/chunkencoderclozed", createChunkEncoderClozed), ChunkEncoderClozed::class.java)
+            .retrieve(HttpRequest.POST("/${chunk.id}/flashcards/clozed", createChunkEncoderClozed), ClozedFlashcard::class.java)
 
-        val actual: List<ChunkEncoderClozed> = chunkEncoderClozedClient
+        val actual: List<ClozedFlashcard> = chunkEncoderClozedClient
             .toBlocking()
-            .retrieve(HttpRequest.GET<List<ChunkEncoderClozed>>("/${chunk.id}/chunkencoderclozed"), Argument.listOf(ChunkEncoderClozed::class.java))
+            .retrieve(HttpRequest.GET<List<ClozedFlashcard>>("/${chunk.id}/flashcards/clozed"), Argument.listOf(ClozedFlashcard::class.java))
 
-        Assertions.assertEquals(1, actual.size, "should return 1 chunkencoderclozed")
+        Assertions.assertEquals(1, actual.size, "should return 1 flashcards")
 
-        val deleteRequest = HttpRequest.DELETE<Nothing>("/${chunk.id}/chunkencoderclozed/${chunkEncoderClozed.id}")
+        val deleteRequest = HttpRequest.DELETE<Nothing>("/${chunk.id}/flashcards/clozed/${clozedFlashcard.id}")
 
         chunkEncoderClozedClient
             .toBlocking()
             .exchange<Nothing, Nothing>(deleteRequest)
 
-        val actualAfterDelete: List<ChunkEncoderClozed> = chunkEncoderClozedClient
+        val actualAfterDelete: List<ClozedFlashcard> = chunkEncoderClozedClient
             .toBlocking()
-            .retrieve(HttpRequest.GET<List<ChunkEncoderClozed>>("/${chunk.id}/chunkencoderclozed"), Argument.listOf(ChunkEncoderClozed::class.java))
+            .retrieve(HttpRequest.GET<List<ClozedFlashcard>>("/${chunk.id}/flashcards/clozed"), Argument.listOf(ClozedFlashcard::class.java))
 
-        Assertions.assertEquals(0, actualAfterDelete.size, "should return 0 chunkencoderclozed")
+        Assertions.assertEquals(0, actualAfterDelete.size, "should return 0 clozed flashcard")
     }
 }
 
-val ArbCreateChunkEncoderClozed = arbitrary {
+val ArbCreateClozedFlashcard = arbitrary {
     val chunkId = Arb.uuid().bind()
     val sentence = Arb.string(10..12).bind()
     val clozedPosition = Arb.int()
     val clozedPositions = Arb.list(clozedPosition).bind()
-    CreateChunkEncoderClozed(
+    CreateClozedFlashcard(
         chunkId = chunkId,
         sentence = sentence,
         clozedPositions = clozedPositions

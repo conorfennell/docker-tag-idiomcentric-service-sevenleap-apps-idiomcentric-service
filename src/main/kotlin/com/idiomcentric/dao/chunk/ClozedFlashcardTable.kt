@@ -1,27 +1,27 @@
-package com.idiomcentric.dao.chunkencode
+package com.idiomcentric.dao.chunk
 
-import com.idiomcentric.dao.chunk.ChunkTable
+import io.micronaut.core.annotation.Introspected
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.timestamp
 import java.time.Instant
 import java.util.UUID
 
-object ChunkEncodeTable : Table("CHUNK_ENCODE") {
+object ClozedFlashcardTable : Table("CLOZED_FLASHCARD") {
     val id = uuid("ID")
-    val chunkId = reference("CHUNK_ID", ChunkTable.id).uniqueIndex()
-    val question = text("QUESTION")
-    var answer = text("TEXT") // TODO what should collate be set to?
+    val chunkId = reference("CHUNK_ID", ChunkTable.id)
+    val sentence = text("SENTENCE")
+    val clozedPositions = text("CLOZED_POSITIONS")
     val createdAt = timestamp("CREATED_AT")
     val updatedAt = timestamp("UPDATED_AT")
-
     override val primaryKey = PrimaryKey(id)
 }
 
-data class ChunkEncode(
+@Introspected
+data class ClozedFlashcard(
     val id: UUID,
     val chunkId: UUID,
-    val question: String,
-    val answer: String,
+    val sentence: String,
+    val clozedPositions: List<Int>,
     val createdAt: Instant,
     val updatedAt: Instant,
 )

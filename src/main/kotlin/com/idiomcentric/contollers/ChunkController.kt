@@ -1,9 +1,9 @@
 package com.idiomcentric.contollers
 
 import com.idiomcentric.dao.chunk.Chunk
-import com.idiomcentric.dao.chunk.ChunkEncoderClozed
-import com.idiomcentric.service.ChunkEncoderClozedService
+import com.idiomcentric.dao.chunk.ClozedFlashcard
 import com.idiomcentric.service.ChunkService
+import com.idiomcentric.service.ClozedFlashcardService
 import com.idiomcentric.service.Creation
 import com.idiomcentric.service.Deletion
 import com.idiomcentric.service.Retrieval
@@ -28,7 +28,7 @@ private val logger: KLogger = KotlinLogging.logger {}
 
 @Controller("/api/chunks")
 @Secured(SecurityRule.IS_ANONYMOUS)
-class ChunkController(private val chunkService: ChunkService, private val chunkEncoderClozedService: ChunkEncoderClozedService) {
+class ChunkController(private val chunkService: ChunkService, private val clozedFlashcardService: ClozedFlashcardService) {
 
     @Get(processes = [MediaType.APPLICATION_JSON])
     suspend fun all(): List<Chunk> {
@@ -77,43 +77,43 @@ class ChunkController(private val chunkService: ChunkService, private val chunkE
         }
     }
 
-    @Get("/{chunkId}/chunkencoderclozed", headRoute = false)
-    suspend fun byChunkId(chunkId: UUID): List<ChunkEncoderClozed> = chunkEncoderClozedService.byChunkId(chunkId)
+    @Get("/{chunkId}/flashcards/clozed", headRoute = false)
+    suspend fun byChunkId(chunkId: UUID): List<ClozedFlashcard> = clozedFlashcardService.byChunkId(chunkId)
 
-    @Get("/{chunkId}/chunkencoderclozed/{id}", headRoute = false)
-    suspend fun byChunkId(chunkId: UUID, id: UUID): HttpResponse<ChunkEncoderClozed?> = when (val retrieved = chunkEncoderClozedService.byId(id)) {
+    @Get("/{chunkId}/flashcards/clozed/{id}", headRoute = false)
+    suspend fun byChunkId(chunkId: UUID, id: UUID): HttpResponse<ClozedFlashcard?> = when (val retrieved = clozedFlashcardService.byId(id)) {
         is Retrieval.NotFound -> HttpResponse.notFound()
         is Retrieval.Retrieved -> HttpResponse.ok(retrieved.value)
     }
 
-    @Post("/{chunkId}/chunkencoderclozed", processes = [MediaType.APPLICATION_JSON])
+    @Post("/{chunkId}/flashcards/clozed", processes = [MediaType.APPLICATION_JSON])
     @Secured(SecurityRule.IS_ANONYMOUS)
-    suspend fun create(@Body createChunk: CreateChunkEncoderClozed): HttpResponse<ChunkEncoderClozed> {
+    suspend fun create(@Body createChunk: CreateClozedFlashcard): HttpResponse<ClozedFlashcard> {
         withLoggingContext(
             "ACTION" to "CREATE"
         ) { logger.info("Putting clozed") }
 
-        return when (val creation = chunkEncoderClozedService.create(createChunk)) {
+        return when (val creation = clozedFlashcardService.create(createChunk)) {
             is Creation.Error -> HttpResponse.serverError()
             is Creation.Retrieved -> HttpResponse.ok(creation.value)
         }
     }
 
-    @Put("/{chunkId}/chunkencoderclozed/{id}", processes = [MediaType.APPLICATION_JSON])
-    suspend fun put(chunkId: UUID, id: UUID, @Body updateChunkEncoder: ChunkEncoderClozed): HttpResponse<Nothing> {
+    @Put("/{chunkId}/flashcards/clozed/{id}", processes = [MediaType.APPLICATION_JSON])
+    suspend fun put(chunkId: UUID, id: UUID, @Body updateChunkEncoder: ClozedFlashcard): HttpResponse<Nothing> {
         withLoggingContext(
             "ACTION" to "DELETE",
             "CHUNK_ID" to chunkId.toString(),
             "CLOZED" to id.toString()
         ) { logger.info("Putting clozed") }
 
-        return when (chunkEncoderClozedService.updateById(updateChunkEncoder)) {
+        return when (clozedFlashcardService.updateById(updateChunkEncoder)) {
             is Update.NotFound -> HttpResponse.notFound()
             is Update.Updated -> HttpResponse.ok()
         }
     }
 
-    @Delete("/{chunkId}/chunkencoderclozed/{id}")
+    @Delete("/{chunkId}/flashcards/clozed/{id}")
     suspend fun delete(chunkId: UUID, id: UUID): HttpResponse<Nothing> {
         withLoggingContext(
             "ACTION" to "DELETE",
@@ -121,7 +121,7 @@ class ChunkController(private val chunkService: ChunkService, private val chunkE
             "CLOZED" to id.toString()
         ) { logger.info("Deleting clozed") }
 
-        return when (chunkEncoderClozedService.deleteById(id)) {
+        return when (clozedFlashcardService.deleteById(id)) {
             is Deletion.Deleted -> {
                 HttpResponse.noContent()
             }
@@ -137,7 +137,7 @@ data class CreateChunk(
 )
 
 @Introspected
-data class CreateChunkEncoderClozed(
+data class CreateClozedFlashcard(
     val chunkId: UUID,
     val sentence: String,
     val clozedPositions: List<Int>,

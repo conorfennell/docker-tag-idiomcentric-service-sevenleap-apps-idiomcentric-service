@@ -1,4 +1,4 @@
-CREATE TABLE CHUNK_FLASHCARD_CLOZED (
+CREATE TABLE CLOZED_FLASHCARD (
     id uuid NOT NULL DEFAULT uuid_generate_v4() PRIMARY KEY,
     chunk_id uuid,
     sentence TEXT NOT NULL,
