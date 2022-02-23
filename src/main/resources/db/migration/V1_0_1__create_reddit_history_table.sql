@@ -1,4 +1,4 @@
-CREATE TABLE reddit_posts (
+CREATE TABLE IF NOT EXISTS reddit_posts (
     id uuid NOT NULL DEFAULT uuid_generate_v4() PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     url    VARCHAR(255) NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE reddit_posts (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE conference (
+CREATE TABLE IF NOT EXISTS conference (
     id uuid NOT NULL DEFAULT uuid_generate_v4() PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     updated_at TIMESTAMP NOT NULL,

@@ -8,7 +8,7 @@ import java.util.UUID
 
 object ClozedFlashcardTable : Table("CLOZED_FLASHCARD") {
     val id = uuid("ID")
-    val chunkId = reference("CHUNK_ID", ChunkTable.id)
+    val chunkId = uuid("CHUNK_ID")
     val sentence = text("SENTENCE")
     val clozedPositions = text("CLOZED_POSITIONS")
     val createdAt = timestamp("CREATED_AT")

@@ -1,4 +1,4 @@
-CREATE TABLE chunk_encoder_clozed (
+CREATE TABLE IF NOT EXISTS chunk_encoder_clozed (
     id uuid NOT NULL DEFAULT uuid_generate_v4() PRIMARY KEY,
     chunk_id uuid,
     sentence TEXT NOT NULL,
