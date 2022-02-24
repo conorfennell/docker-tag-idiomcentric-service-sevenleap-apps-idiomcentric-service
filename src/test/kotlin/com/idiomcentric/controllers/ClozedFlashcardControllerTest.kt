@@ -16,6 +16,7 @@ import io.micronaut.core.type.Argument
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
+import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
@@ -42,7 +43,44 @@ class ClozedFlashcardControllerTest : IntegrationProvider() {
     }
 
     @Test
-    fun shouldCreateChunk() {
+    fun shouldReturnNoClozedFlashcardSuccessfully() {
+        val clozedFlashcardId = UUID.randomUUID()
+        val thrown = Assertions.assertThrows(
+            HttpClientResponseException::class.java,
+            {
+                chunkEncoderClozedClient
+                    .toBlocking()
+                    .retrieve(HttpRequest.GET<List<ClozedFlashcard>>("/$clozedFlashcardId"), Argument.listOf(ClozedFlashcard::class.java))
+            },
+            "HttpClientResponseException Not Found expected"
+        )
+
+        Assertions.assertEquals("Not Found", thrown.message)
+    }
+
+    @Test
+    fun shouldRetrieveClozedFlashcard() {
+        val createChunk = ArbCreateChunk.next()
+
+        val chunk = chunkEncoderClozedClient
+            .toBlocking()
+            .retrieve(HttpRequest.POST("", createChunk), Chunk::class.java)
+
+        val createChunkEncoderClozed = ArbCreateClozedFlashcard.next().copy(chunkId = chunk.id)
+
+        val clozedFlashcard = chunkEncoderClozedClient
+            .toBlocking()
+            .retrieve(HttpRequest.POST("/${chunk.id}/flashcards/clozed", createChunkEncoderClozed), ClozedFlashcard::class.java)
+
+        val getClozedFlashcard = chunkEncoderClozedClient
+            .toBlocking()
+            .retrieve(HttpRequest.GET<ClozedFlashcard>("/${chunk.id}/flashcards/clozed/${clozedFlashcard.id}"), ClozedFlashcard::class.java)
+
+        Assertions.assertEquals(clozedFlashcard, getClozedFlashcard, "clozed flashcard should be the same")
+    }
+
+    @Test
+    fun shouldCreateClozedFlashcard() {
         val createChunk = ArbCreateChunk.next()
 
         val chunk = chunkEncoderClozedClient

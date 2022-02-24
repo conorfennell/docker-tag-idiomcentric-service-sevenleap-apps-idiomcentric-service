@@ -47,6 +47,7 @@ class ChunkControllerTest : IntegrationProvider() {
 
         Assertions.assertEquals("Not Found", thrown.message)
     }
+
     @Test
     fun shouldCreateChunk() {
         val createChunk = ArbCreateChunk.next()

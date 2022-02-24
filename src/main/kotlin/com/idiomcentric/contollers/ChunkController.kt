@@ -88,26 +88,26 @@ class ChunkController(private val chunkService: ChunkService, private val clozed
 
     @Post("/{chunkId}/flashcards/clozed", processes = [MediaType.APPLICATION_JSON])
     @Secured(SecurityRule.IS_ANONYMOUS)
-    suspend fun create(@Body createChunk: CreateClozedFlashcard): HttpResponse<ClozedFlashcard> {
+    suspend fun create(@Body createClozedFlashcard: CreateClozedFlashcard): HttpResponse<ClozedFlashcard> {
         withLoggingContext(
             "ACTION" to "CREATE"
         ) { logger.info("Putting clozed") }
 
-        return when (val creation = clozedFlashcardService.create(createChunk)) {
+        return when (val creation = clozedFlashcardService.create(createClozedFlashcard)) {
             is Creation.Error -> HttpResponse.serverError()
             is Creation.Retrieved -> HttpResponse.ok(creation.value)
         }
     }
 
     @Put("/{chunkId}/flashcards/clozed/{id}", processes = [MediaType.APPLICATION_JSON])
-    suspend fun put(chunkId: UUID, id: UUID, @Body updateChunkEncoder: ClozedFlashcard): HttpResponse<Nothing> {
+    suspend fun put(chunkId: UUID, id: UUID, @Body updateClozedFlashcard: ClozedFlashcard): HttpResponse<Nothing> {
         withLoggingContext(
             "ACTION" to "UPDATE",
             "CHUNK_ID" to chunkId.toString(),
             "CLOZED" to id.toString()
         ) { logger.info("Putting clozed") }
 
-        return when (clozedFlashcardService.updateById(updateChunkEncoder)) {
+        return when (clozedFlashcardService.updateById(updateClozedFlashcard)) {
             is Update.NotFound -> HttpResponse.notFound()
             is Update.Updated -> HttpResponse.ok()
         }
