@@ -2,7 +2,12 @@ package com.idiomcentric.controllers
 
 import com.idiomcentric.IntegrationProvider
 import com.idiomcentric.dao.chunk.Chunk
+import io.kotest.property.Arb
+import io.kotest.property.arbitrary.arbitrary
+import io.kotest.property.arbitrary.instant
 import io.kotest.property.arbitrary.next
+import io.kotest.property.arbitrary.string
+import io.kotest.property.arbitrary.uuid
 import io.micronaut.core.type.Argument
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.client.HttpClient
@@ -83,6 +88,28 @@ class ChunkControllerTest : IntegrationProvider() {
     }
 
     @Test
+    fun shouldReturnNotFoundOnDeleteChunk() {
+        val missingId = UUID.randomUUID()
+
+        Assertions.assertThrows(HttpClientResponseException::class.java, {
+            chunkClient
+                .toBlocking()
+                .exchange<Nothing, Nothing>(HttpRequest.DELETE("/$missingId"))
+        }, "HttpClientResponseException Not Found expected")
+    }
+
+    @Test
+    fun shouldReturnNotFoundOnUpdateChunk() {
+        val chunk = ArbChunk.next()
+
+        Assertions.assertThrows(HttpClientResponseException::class.java, {
+            chunkClient
+                .toBlocking()
+                .exchange<Chunk, Nothing>(HttpRequest.PUT("/${chunk.id}", chunk))
+        }, "HttpClientResponseException Not Found expected")
+    }
+
+    @Test
     fun shouldCreateUpdateChunk() {
         val createChunk = ArbCreateChunk.next()
 
@@ -101,4 +128,19 @@ class ChunkControllerTest : IntegrationProvider() {
 
         Assertions.assertEquals(update.title, actual.title, "returned chunk should be updated")
     }
+}
+
+val ArbChunk = arbitrary {
+    val id = Arb.uuid().bind()
+    val title = Arb.string(10..12).bind()
+    val body = Arb.string(10..12).bind()
+    val updatedAt = Arb.instant().bind()
+    val createdAt = Arb.instant().bind()
+    Chunk(
+        id = id,
+        title = title,
+        body = body,
+        updatedAt = updatedAt,
+        createdAt = createdAt
+    )
 }
