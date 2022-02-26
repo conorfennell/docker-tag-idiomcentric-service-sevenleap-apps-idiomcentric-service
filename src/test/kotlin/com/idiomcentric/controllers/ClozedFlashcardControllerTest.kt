@@ -130,6 +130,32 @@ class ClozedFlashcardControllerTest : IntegrationProvider() {
 
         Assertions.assertEquals(0, actualAfterDelete.size, "should return 0 clozed flashcard")
     }
+
+    @Test
+    fun shouldCreateUpdateChunk() {
+        val createChunk = ArbCreateChunk.next()
+
+        val chunk = chunkEncoderClozedClient
+            .toBlocking()
+            .retrieve(HttpRequest.POST("", createChunk), Chunk::class.java)
+
+        val createClozedFlashcard = ArbCreateClozedFlashcard.next().copy(chunkId = chunk.id)
+
+        val clozedFlashcard = chunkEncoderClozedClient
+            .toBlocking()
+            .retrieve(HttpRequest.POST("/${chunk.id}/flashcards/clozed", createClozedFlashcard), ClozedFlashcard::class.java)
+
+        val updatedSentence = "UPDATED"
+        chunkEncoderClozedClient
+            .toBlocking()
+            .exchange<ClozedFlashcard, Nothing>(HttpRequest.PUT("/${chunk.id}/flashcards/clozed/${clozedFlashcard.id}", clozedFlashcard.copy(sentence = updatedSentence)))
+
+        val actual: ClozedFlashcard = chunkEncoderClozedClient
+            .toBlocking()
+            .retrieve(HttpRequest.GET<List<ClozedFlashcard>>("/${chunk.id}/flashcards/clozed/${clozedFlashcard.id}"), ClozedFlashcard::class.java)
+
+        Assertions.assertEquals(updatedSentence, actual.sentence, "should return 1 flashcards")
+    }
 }
 
 val ArbCreateClozedFlashcard = arbitrary {
