@@ -59,6 +59,25 @@ class ClozedFlashcardControllerTest : IntegrationProvider() {
     }
 
     @Test
+    fun shouldReturnNoClozedFlashcardDeletedSuccessfully() {
+        val chunkId = UUID.randomUUID()
+        val clozedFlashcardId = UUID.randomUUID()
+        val thrown = Assertions.assertThrows(
+            HttpClientResponseException::class.java,
+            {
+                val deleteRequest = HttpRequest.DELETE<Nothing>("/$chunkId/flashcards/clozed/$clozedFlashcardId")
+
+                chunkEncoderClozedClient
+                    .toBlocking()
+                    .exchange<Nothing, Nothing>(deleteRequest)
+            },
+            "HttpClientResponseException Not Found expected"
+        )
+
+        Assertions.assertEquals("Not Found", thrown.message)
+    }
+
+    @Test
     fun shouldRetrieveClozedFlashcard() {
         val createChunk = ArbCreateChunk.next()
 
