@@ -18,6 +18,8 @@ import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import java.time.Duration
+import java.time.Instant
 import java.util.UUID
 
 @MicronautTest
@@ -134,8 +136,8 @@ val ArbChunk = arbitrary {
     val id = Arb.uuid().bind()
     val title = Arb.string(10..12).bind()
     val body = Arb.string(10..12).bind()
-    val updatedAt = Arb.instant().bind()
-    val createdAt = Arb.instant().bind()
+    val updatedAt = Arb.instant(Instant.now(), Instant.now().plusSeconds(Duration.ofDays(365).toSeconds())).bind()
+    val createdAt = Arb.instant(Instant.now(), Instant.now().plusSeconds(Duration.ofDays(365).toSeconds())).bind()
     Chunk(
         id = id,
         title = title,
