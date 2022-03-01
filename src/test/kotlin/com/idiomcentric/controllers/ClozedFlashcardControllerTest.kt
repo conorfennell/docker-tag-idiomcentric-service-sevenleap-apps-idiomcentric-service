@@ -44,13 +44,14 @@ class ClozedFlashcardControllerTest : IntegrationProvider() {
 
     @Test
     fun shouldReturnNoClozedFlashcardSuccessfully() {
+        val chunkId = UUID.randomUUID()
         val clozedFlashcardId = UUID.randomUUID()
         val thrown = Assertions.assertThrows(
             HttpClientResponseException::class.java,
             {
                 chunkEncoderClozedClient
                     .toBlocking()
-                    .retrieve(HttpRequest.GET<List<ClozedFlashcard>>("/$clozedFlashcardId"), Argument.listOf(ClozedFlashcard::class.java))
+                    .retrieve(HttpRequest.GET<ClozedFlashcard>("/$chunkId/flashcards/clozed/$clozedFlashcardId"), ClozedFlashcard::class.java)
             },
             "HttpClientResponseException Not Found expected"
         )
