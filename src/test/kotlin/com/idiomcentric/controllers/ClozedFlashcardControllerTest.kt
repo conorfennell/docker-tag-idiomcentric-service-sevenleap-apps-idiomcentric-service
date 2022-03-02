@@ -7,6 +7,7 @@ import com.idiomcentric.dao.chunk.Chunk
 import com.idiomcentric.dao.chunk.ClozedFlashcard
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.arbitrary
+import io.kotest.property.arbitrary.instant
 import io.kotest.property.arbitrary.int
 import io.kotest.property.arbitrary.list
 import io.kotest.property.arbitrary.next
@@ -22,6 +23,8 @@ import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import java.time.Duration
+import java.time.Instant
 import java.util.UUID
 
 @MicronautTest
@@ -176,6 +179,24 @@ class ClozedFlashcardControllerTest : IntegrationProvider() {
 
         Assertions.assertEquals(updatedSentence, actual.sentence, "should return 1 flashcards")
     }
+
+    @Test
+    fun shouldUpdateClozedFlashcard() {
+        val chunkId = UUID.randomUUID()
+        val clozedFlashcard = ArbClozedFlashcard.next()
+
+        val thrown = Assertions.assertThrows(
+            HttpClientResponseException::class.java,
+            {
+                chunkEncoderClozedClient
+                    .toBlocking()
+                    .exchange<ClozedFlashcard, Nothing>(HttpRequest.PUT("/$chunkId/flashcards/clozed/${clozedFlashcard.id}", clozedFlashcard))
+            },
+            "HttpClientResponseException Not Found expected"
+        )
+
+        Assertions.assertEquals("Not Found", thrown.message)
+    }
 }
 
 val ArbCreateClozedFlashcard = arbitrary {
@@ -187,6 +208,24 @@ val ArbCreateClozedFlashcard = arbitrary {
         chunkId = chunkId,
         sentence = sentence,
         clozedPositions = clozedPositions
+    )
+}
+
+val ArbClozedFlashcard = arbitrary {
+    val id = Arb.uuid().bind()
+    val chunkId = Arb.uuid().bind()
+    val sentence = Arb.string(10..12).bind()
+    val clozedPosition = Arb.int()
+    val clozedPositions = Arb.list(clozedPosition).bind()
+    val updatedAt = Arb.instant(Instant.now(), Instant.now().plusSeconds(Duration.ofDays(365).toSeconds())).bind()
+    val createdAt = Arb.instant(Instant.now(), Instant.now().plusSeconds(Duration.ofDays(365).toSeconds())).bind()
+    ClozedFlashcard(
+        id = id,
+        chunkId = chunkId,
+        sentence = sentence,
+        clozedPositions = clozedPositions,
+        updatedAt = updatedAt,
+        createdAt = createdAt
     )
 }
 
