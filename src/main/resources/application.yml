@@ -20,7 +20,13 @@ micronaut:
       charset: 'UTF-8'
       expire-after-write: 10m
 
-endpoints:
+
+  security:
+    enabled: true
+    token:
+      jwt:
+        enabled: true
+
   health:
     enabled: true
     sensitive: false

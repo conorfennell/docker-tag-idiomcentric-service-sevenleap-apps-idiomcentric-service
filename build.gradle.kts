@@ -10,6 +10,7 @@ val micronautVersion: String by project
 val mockkVersion: String by project
 val testContainersVersion: String by project
 val mockServerClientVersion: String by project
+val auth0jwtVersion: String by project
 
 plugins {
     kotlin("jvm")
@@ -49,6 +50,7 @@ dependencies {
     kapt("io.micronaut.security:micronaut-security-annotations")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
     implementation("io.micronaut.security:micronaut-security-jwt")
+    implementation("com.auth0:jwks-rsa:$auth0jwtVersion")
     implementation("ch.qos.logback.contrib:logback-json-classic:$logbackVersion")
     implementation("ch.qos.logback.contrib:logback-jackson:$logbackVersion")
     implementation("ch.qos.logback:logback-classic")
