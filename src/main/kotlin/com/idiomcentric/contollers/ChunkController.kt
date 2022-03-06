@@ -30,6 +30,12 @@ private val logger: KLogger = KotlinLogging.logger {}
 @Secured(SecurityRule.IS_ANONYMOUS)
 class ChunkController(private val chunkService: ChunkService, private val clozedFlashcardService: ClozedFlashcardService) {
 
+    @Get("/auth", processes = [MediaType.APPLICATION_JSON])
+    @Secured(SecurityRule.IS_AUTHENTICATED)
+    suspend fun auth(): List<Chunk> {
+        return chunkService.all()
+    }
+
     @Get(processes = [MediaType.APPLICATION_JSON])
     suspend fun all(): List<Chunk> {
         return chunkService.all()
