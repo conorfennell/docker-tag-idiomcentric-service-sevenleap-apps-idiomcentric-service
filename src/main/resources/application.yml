@@ -20,12 +20,14 @@ micronaut:
       charset: 'UTF-8'
       expire-after-write: 10m
 
-
   security:
-    enabled: true
+    authentication: bearer
     token:
       jwt:
-        enabled: true
+        signatures:
+          secret:
+            generator:
+              secret: '"${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForANewOne}"'
 
   health:
     enabled: true

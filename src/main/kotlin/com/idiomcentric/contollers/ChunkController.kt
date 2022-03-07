@@ -22,6 +22,7 @@ import io.micronaut.security.rules.SecurityRule
 import mu.KLogger
 import mu.KotlinLogging
 import mu.withLoggingContext
+import java.security.Principal
 import java.util.UUID
 
 private val logger: KLogger = KotlinLogging.logger {}
@@ -32,9 +33,7 @@ class ChunkController(private val chunkService: ChunkService, private val clozed
 
     @Get("/auth", processes = [MediaType.APPLICATION_JSON])
     @Secured(SecurityRule.IS_AUTHENTICATED)
-    suspend fun auth(): List<Chunk> {
-        return chunkService.all()
-    }
+    suspend fun auth(principal: Principal): String = principal.name
 
     @Get(processes = [MediaType.APPLICATION_JSON])
     suspend fun all(): List<Chunk> {
