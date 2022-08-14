@@ -39,4 +39,10 @@ jwks-rsa = { module = "com.auth0:jwks-rsa", version = "0.20.2" }
 groovy = ["groovy-core", "groovy-json", "groovy-nio"]
 
 [plugins]
-jmh = { id = "me.champeau.jmh", version = "0.6.5" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "10.3.0" }
+kotlin-plugin-allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin" }
+johnrengelman-shadow = { id = "com.github.johnrengelman.shadow", version = "7.1.2" }
+micronaut-application = { id = "io.micronaut.application", version = "3.2.0" }
+ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.41.0" }

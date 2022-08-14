@@ -1,12 +1,12 @@
 plugins {
-    kotlin("jvm")
-    kotlin("kapt")
     jacoco
-    id("com.github.ben-manes.versions")
-    id("com.github.johnrengelman.shadow")
-    id("io.micronaut.application")
-    id("org.jetbrains.kotlin.plugin.allopen")
-    id("org.jlleitschuh.gradle.ktlint")
+    alias(libs.plugins.ben.manes.versions)
+    alias(libs.plugins.johnrengelman.shadow)
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.plugin.allopen)
+    alias(libs.plugins.ktlint)
+    alias(libs.plugins.micronaut.application)
 }
 
 version = "1.0.0"
