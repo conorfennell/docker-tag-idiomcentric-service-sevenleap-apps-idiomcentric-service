@@ -3,3 +3,4 @@ build
 out
 .gradle
 .DS_Store
+bin
