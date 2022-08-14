@@ -1,17 +1,3 @@
-val junitJupiterEngine: String by project
-val jetbrainsExposedVersion: String by project
-val koTestVersion: String by project
-val kotlinLoggingVersion: String by project
-val kotlinVersion: String by project
-val kotlinxCoroutinesVersion: String by project
-val logbackVersion: String by project
-val micronautTestJunit5Version: String by project
-val micronautVersion: String by project
-val mockkVersion: String by project
-val testContainersVersion: String by project
-val mockServerClientVersion: String by project
-val auth0jwtVersion: String by project
-
 plugins {
     kotlin("jvm")
     kotlin("kapt")
@@ -31,7 +17,7 @@ repositories {
 }
 
 micronaut {
-    version.set(micronautVersion)
+    version.set(libs.versions.micronaut)
     runtime("netty")
     testRuntime("junit5")
     processing {
@@ -50,17 +36,17 @@ dependencies {
     kapt("io.micronaut.security:micronaut-security-annotations")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
     implementation("io.micronaut.security:micronaut-security-jwt")
-    implementation("com.auth0:jwks-rsa:$auth0jwtVersion")
-    implementation("ch.qos.logback.contrib:logback-json-classic:$logbackVersion")
-    implementation("ch.qos.logback.contrib:logback-jackson:$logbackVersion")
-    implementation("ch.qos.logback:logback-classic")
+    implementation(libs.jwks.rsa)
+    implementation(libs.logback.jackson)
+    implementation(libs.logback.json.classic)
+    implementation(libs.logback.classic)
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
+    implementation(libs.kotlin.logging)
     implementation("io.micronaut.flyway:micronaut-flyway")
-    implementation("org.jetbrains.exposed:exposed-core:$jetbrainsExposedVersion")
-    implementation("org.jetbrains.exposed:exposed-dao:$jetbrainsExposedVersion")
-    implementation("org.jetbrains.exposed:exposed-jdbc:$jetbrainsExposedVersion")
-    implementation("org.jetbrains.exposed:exposed-java-time:$jetbrainsExposedVersion")
+    implementation(libs.exposed.core)
+    implementation(libs.exposed.dao)
+    implementation(libs.exposed.jdbc)
+    implementation(libs.exposed.java.time)
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut:micronaut-runtime")
     implementation("io.micronaut:micronaut-graal")
@@ -72,21 +58,21 @@ dependencies {
     implementation("io.swagger.core.v3:swagger-annotations")
     implementation("javax.annotation:javax.annotation-api")
     implementation("org.graalvm.nativeimage:svm")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:$kotlinxCoroutinesVersion")
+    implementation(libs.kotlin.reflect)
+    implementation(libs.kotlin.stdlib.jdk8)
+    implementation(libs.kotlinx.coroutines.reactive)
+    implementation(libs.kotlinx.coroutines.core)
     runtimeOnly("org.postgresql:postgresql")
 
-    testImplementation("io.kotest:kotest-property:$koTestVersion")
-    testImplementation("io.micronaut.test:micronaut-test-junit5:$micronautTestJunit5Version")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterEngine")
+    testImplementation(libs.kotest.property)
+    testImplementation(libs.micronaut.test.junit5)
+    testImplementation(libs.junit.jupiter.engine)
     testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("io.mockk:mockk:$mockkVersion")
-    testImplementation("org.testcontainers:mockserver:$testContainersVersion")
-    testImplementation("org.testcontainers:postgresql:$testContainersVersion")
+    testImplementation(libs.mockk)
+    testImplementation(libs.testcontainers.mockserver)
+    testImplementation(libs.testcontainers.postgresql)
     testAnnotationProcessor("io.micronaut:micronaut-inject-java")
-    testImplementation("org.mock-server:mockserver-client-java:$mockServerClientVersion")
+    testImplementation(libs.mockserver.client.java)
 }
 
 application {

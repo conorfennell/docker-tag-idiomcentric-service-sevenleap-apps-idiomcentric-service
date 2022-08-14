@@ -12,7 +12,7 @@ import org.testcontainers.utility.DockerImageName
 
 abstract class IntegrationProvider : TestPropertyProvider {
     companion object {
-        val MOCKSERVER_IMAGE: DockerImageName = DockerImageName.parse("mockserver/mockserver:mockserver-5.11.2")
+        val MOCKSERVER_IMAGE: DockerImageName = DockerImageName.parse("mockserver/mockserver:mockserver-5.13.2")
         val POSTGRES_SQL_IMAGE: DockerImageName = DockerImageName.parse("postgres:12.9")
     }
 
